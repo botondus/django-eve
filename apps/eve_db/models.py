@@ -10,6 +10,9 @@
 from django.db import models
 
 class Chrbloodlines(models.Model):
+    """
+    Bloodlines for newly created characters with starting attributes. 
+    """
     bloodlineid = models.SmallIntegerField(primary_key=True)
     bloodlinename = models.CharField(max_length=100)
     raceid = models.ForeignKey('Chrraces', db_column='raceid')
@@ -27,10 +30,17 @@ class Chrbloodlines(models.Model):
     shortdescription = models.CharField(max_length=500)
     shortmaledescription = models.CharField(max_length=500)
     shortfemaledescription = models.CharField(max_length=500)
+    
     class Meta:
         db_table = u'chrbloodlines'
+        
+    def __unicode__(self):
+        return self.bloodlinename
 
 class Chrancestries(models.Model):
+    """
+    Available Ancestries with bonus skills and items. 
+    """
     ancestryid = models.SmallIntegerField(primary_key=True)
     ancestryname = models.CharField(max_length=100)
     bloodlineid = models.ForeignKey('Chrbloodlines', db_column='bloodlineid')
@@ -42,27 +52,49 @@ class Chrancestries(models.Model):
     intelligence = models.SmallIntegerField()
     graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
+    
     class Meta:
         db_table = u'chrancestries'
+        
+    def __unicode__(self):
+        return self.ancestryname
 
 class Chrcareerskills(models.Model):
+    """
+    List of skills and levels for each Career. 
+    """
     careerid = models.ForeignKey('Chrcareers', db_column='careerid')
     skilltypeid = models.ForeignKey('Invtypes', db_column='skilltypeid')
     levels = models.SmallIntegerField()
+    
     class Meta:
         db_table = u'chrcareerskills'
+        
+    def __unicode__(self):
+        return '%s (%s)' % (self.skilltypeid.typename, 
+                            self.careerid.careername)
 
 class Chrattributes(models.Model):
+    """
+    Five base Attrinutes annotated. 
+    """
     attributeid = models.SmallIntegerField(primary_key=True)
     attributename = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
     notes = models.CharField(max_length=500)
+    
     class Meta:
         db_table = u'chrattributes'
+        
+    def __unicode__(self):
+        return self.attributename
 
 class Chrfactions(models.Model):
+    """
+    All main Factions found in game. 
+    """
     factionid = models.IntegerField(primary_key=True)
     factionname = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
@@ -77,6 +109,9 @@ class Chrfactions(models.Model):
                                              related_name='militia_corp_set')
     class Meta:
         db_table = u'chrfactions'
+        
+    def __unicode__(self):
+        return self.factionname
 
 class Chrschools(models.Model):
     raceid = models.ForeignKey('Chrraces', db_column='raceid')
