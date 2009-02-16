@@ -19,14 +19,14 @@ class Chrbloodlines(models.Model):
     description = models.CharField(max_length=1000)
     maledescription = models.CharField(max_length=1000)
     femaledescription = models.CharField(max_length=1000)
-    shiptypeid = models.ForeignKey('Invtypes', db_column='shiptypeid')
-    corporationid = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
+    shiptype = models.ForeignKey('Invtypes', db_column='shiptypeid')
+    corporation = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
     perception = models.SmallIntegerField()
     willpower = models.SmallIntegerField()
     charisma = models.SmallIntegerField()
     memory = models.SmallIntegerField()
     intelligence = models.SmallIntegerField()
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
+    graphic = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
     shortmaledescription = models.CharField(max_length=500)
     shortfemaledescription = models.CharField(max_length=500)
@@ -43,14 +43,14 @@ class Chrancestries(models.Model):
     """
     ancestryid = models.SmallIntegerField(primary_key=True)
     ancestryname = models.CharField(max_length=100)
-    bloodlineid = models.ForeignKey('Chrbloodlines', db_column='bloodlineid')
+    bloodline = models.ForeignKey('Chrbloodlines', db_column='bloodlineid')
     description = models.CharField(max_length=1000)
     perception = models.SmallIntegerField()
     willpower = models.SmallIntegerField()
     charisma = models.SmallIntegerField()
     memory = models.SmallIntegerField()
     intelligence = models.SmallIntegerField()
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
+    graphici = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
     
     class Meta:
@@ -63,16 +63,16 @@ class Chrcareerskills(models.Model):
     """
     List of skills and levels for each Career. 
     """
-    careerid = models.ForeignKey('Chrcareers', db_column='careerid')
-    skilltypeid = models.ForeignKey('Invtypes', db_column='skilltypeid')
+    career = models.ForeignKey('Chrcareers', db_column='careerid')
+    skilltype = models.ForeignKey('Invtypes', db_column='skilltypeid')
     levels = models.SmallIntegerField()
     
     class Meta:
         db_table = u'chrcareerskills'
         
     def __unicode__(self):
-        return '%s (%s)' % (self.skilltypeid.typename, 
-                            self.careerid.careername)
+        return '%s (%s)' % (self.skilltype.typename, 
+                            self.career.careername)
 
 class Chrattributes(models.Model):
     """
@@ -81,7 +81,7 @@ class Chrattributes(models.Model):
     attributeid = models.SmallIntegerField(primary_key=True)
     attributename = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
+    graphic = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
     notes = models.CharField(max_length=500)
     
@@ -99,14 +99,14 @@ class Chrfactions(models.Model):
     factionname = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     raceids = models.IntegerField()
-    solarsystemid = models.ForeignKey('Mapsolarsystems', db_column='solarsystemid')
-    corporationid = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
+    solarsystem = models.ForeignKey('Mapsolarsystems', db_column='solarsystemid')
+    corporation = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
     sizefactor = models.FloatField()
     stationcount = models.SmallIntegerField()
     stationsystemcount = models.SmallIntegerField()
-    militiacorporationid = models.ForeignKey('Crpnpccorporations', 
-                                             db_column='militiacorporationid',
-                                             related_name='militia_corp_set')
+    militiacorporation = models.ForeignKey('Crpnpccorporations', 
+                                           db_column='militiacorporationid',
+                                           related_name='militia_corp_set')
     class Meta:
         db_table = u'chrfactions'
         
@@ -114,39 +114,56 @@ class Chrfactions(models.Model):
         return self.factionname
 
 class Chrschools(models.Model):
-    raceid = models.ForeignKey('Chrraces', db_column='raceid')
     schoolid = models.SmallIntegerField(primary_key=True)
+    race = models.ForeignKey('Chrraces', db_column='raceid')
     schoolname = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
-    corporationid = models.ForeignKey('Crpnpccorporations', 
-                                      db_column='corporationid',
-                                      related_name='chrschools_set')
-    newagentid = models.ForeignKey('Agtagents', db_column='newagentid')
-    careerid = models.ForeignKey('Chrcareers', db_column='careerid')
+    graphic = models.ForeignKey('Evegraphics', db_column='graphicid')
+    corporation = models.ForeignKey('Crpnpccorporations', 
+                                    db_column='corporationid',
+                                    related_name='chrschools_set')
+    newagent = models.ForeignKey('Agtagents', db_column='newagentid')
+    career = models.ForeignKey('Chrcareers', db_column='careerid')
+    
     class Meta:
         db_table = u'chrschools'
+        
+    def __unicode__(self):
+        return "%s" % self.schoolname
 
 class Chrraceskills(models.Model):
-    raceid = models.ForeignKey('Chrraces', db_column='raceid')
-    skilltypeid = models.ForeignKey('Invtypes', db_column='skilltypeid')
+    race = models.ForeignKey('Chrraces', db_column='raceid')
+    skilltype = models.ForeignKey('Invtypes', db_column='skilltypeid')
     levels = models.SmallIntegerField()
+    
     class Meta:
         db_table = u'chrraceskills'
+        
+    def __unicode__(self):
+        return "%s (%s)" % (self.skilltype.typename, self.race.racename)
 
 class Chrcareerspecialityskills(models.Model):
-    specialityid = models.ForeignKey('Chrcareerspecialities', db_column='specialityid')
-    skilltypeid = models.ForeignKey('Invtypes', db_column='skilltypeid')
+    speciality = models.ForeignKey('Chrcareerspecialities', db_column='specialityid')
+    skilltype = models.ForeignKey('Invtypes', db_column='skilltypeid')
     levels = models.SmallIntegerField()
+    
     class Meta:
         db_table = u'chrcareerspecialityskills'
+        
+    def __unicode__(self):
+        return "%s (%s)" % (self.skilltype.typename, self.speciality.specialityname)
 
 class Chrschoolagents(models.Model):
-    schoolid = models.ForeignKey('Chrschools', db_column='schoolid')
+    school = models.ForeignKey('Chrschools', db_column='schoolid')
     agentindex = models.SmallIntegerField()
     agentid = models.ForeignKey('Agtagents', db_column='agentid')
+    
     class Meta:
         db_table = u'chrschoolagents'
+        
+    #def __unicode__(self):
+    #    #return "%s (%s)" % (self.agent, self.school)
+        
 
 class Crpactivities(models.Model):
     activityid = models.SmallIntegerField(primary_key=True)
@@ -177,11 +194,11 @@ class Crpnpccorporationdivisions(models.Model):
 
 class Chrcareerspecialities(models.Model):
     specialityid = models.SmallIntegerField(primary_key=True)
-    careerid = models.ForeignKey('Chrcareers', db_column='careerid')
+    career = models.ForeignKey('Chrcareers', db_column='careerid')
     specialityname = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
     shortdescription = models.CharField(max_length=500)
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
+    graphic = models.ForeignKey('Evegraphics', db_column='graphicid')
     class Meta:
         db_table = u'chrcareerspecialities'
 
@@ -787,15 +804,19 @@ class Crpnpccorporations(models.Model):
         db_table = u'crpnpccorporations'
 
 class Agtagents(models.Model):
-    agentid = models.ForeignKey('Evenames', db_column='agentid')
-    divisionid = models.ForeignKey('Crpnpcdivisions', db_column='divisionid')
-    corporationid = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
-    stationid = models.ForeignKey('Stastations', db_column='stationid')
+    agent = models.ForeignKey('Evenames', db_column='agentid')
+    division = models.ForeignKey('Crpnpcdivisions', db_column='divisionid')
+    corporation = models.ForeignKey('Crpnpccorporations', db_column='corporationid')
+    station = models.ForeignKey('Stastations', db_column='stationid')
     level = models.SmallIntegerField()
     quality = models.SmallIntegerField()
-    agenttypeid = models.ForeignKey('Agtagenttypes', db_column='agenttypeid')
+    agenttype = models.ForeignKey('Agtagenttypes', db_column='agenttypeid')
+    
     class Meta:
         db_table = u'agtagents'
+        
+    def __unicode__(self):
+        return self.agent.itemname
 
 class Crtcategories(models.Model):
     categoryid = models.SmallIntegerField(primary_key=True)
@@ -835,22 +856,26 @@ class Stastations(models.Model):
 
 class Invtypes(models.Model):
     typeid = models.SmallIntegerField(primary_key=True)
-    groupid = models.ForeignKey('Invgroups', db_column='groupid')
+    group = models.ForeignKey('Invgroups', db_column='groupid')
     typename = models.CharField(max_length=100)
     description = models.CharField(max_length=3000)
-    graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
+    graphic = models.ForeignKey('Evegraphics', db_column='graphicid')
     radius = models.FloatField()
     mass = models.FloatField()
     volume = models.FloatField()
     capacity = models.FloatField()
     portionsize = models.IntegerField()
-    raceid = models.ForeignKey('Chrraces', db_column='raceid')
+    race = models.ForeignKey('Chrraces', db_column='raceid')
     baseprice = models.FloatField()
     published = models.SmallIntegerField()
-    marketgroupid = models.ForeignKey('Invmarketgroups', db_column='marketgroupid')
+    marketgroup = models.ForeignKey('Invmarketgroups', db_column='marketgroupid')
     chanceofduplicating = models.FloatField()
+    
     class Meta:
         db_table = u'invtypes'
+        
+    def __unicode__(self):
+        return "%s" % self.typename
 
 class Mapdenormalize(models.Model):
     itemid = models.IntegerField(primary_key=True)
@@ -878,17 +903,25 @@ class Chrraces(models.Model):
     description = models.CharField(max_length=1000)
     graphicid = models.ForeignKey('Evegraphics', db_column='graphicid')
     shortdescription = models.CharField(max_length=500)
+    
     class Meta:
         db_table = u'chrraces'
+        
+    def __unicode__(self):
+        return self.racename
 
 class Evenames(models.Model):
     itemid = models.IntegerField(primary_key=True)
     itemname = models.CharField(max_length=100)
-    categoryid = models.ForeignKey('Invcategories', db_column='categoryid')
-    groupid = models.ForeignKey('Invgroups', db_column='groupid')
-    typeid = models.ForeignKey('Invtypes', db_column='typeid')
+    category = models.ForeignKey('Invcategories', db_column='categoryid')
+    group = models.ForeignKey('Invgroups', db_column='groupid')
+    type = models.ForeignKey('Invtypes', db_column='typeid')
+    
     class Meta:
         db_table = u'evenames'
+        
+    def __unicode__(self):
+        return self.itemname
 
 class Mapconstellations(models.Model):
     regionid = models.ForeignKey('Mapregions', db_column='regionid')
