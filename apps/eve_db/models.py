@@ -716,13 +716,12 @@ class Mapregionjumps(models.Model):
                              self.toregion.regionname)
 
 class Mapconstellationjumps(models.Model):
-    # TODO: Is this supposed to be a FK?
-    fromregion_id = models.IntegerField()
+    fromregion = models.ForeignKey('Mapregions', related_name='fromregion_set')
     fromconstellation = models.ForeignKey('Mapconstellations', 
                                           related_name='from_constellation_jumps_set')
     toconstellation = models.ForeignKey('Mapconstellations', 
                                         related_name='to_constellation_jumps_set')
-    toregionid = models.IntegerField()
+    toregion = models.ForeignKey('Mapregions', related_name='toregion_set')
     
     class Meta:
         db_table = u'mapconstellationjumps'
@@ -755,18 +754,18 @@ class Mapjumps(models.Model):
         return self.stargate.type.typename
 
 class Mapsolarsystemjumps(models.Model):
-    # TODO: Is this supposed to be a FK?
-    fromregion_id = models.IntegerField()
-    # TODO: Is this supposed to be a FK?
-    fromconstellation_id = models.IntegerField()
+    fromregion = models.ForeignKey('Mapregions', 
+                                   related_name='fromregionsys_jumps')
+    fromconstellation = models.ForeignKey('Mapconstellations', 
+                                   related_name='fromconstellationsys_jumps')
     fromsolarsystem = models.ForeignKey('Mapsolarsystems', 
                                         related_name='from_solarsystem_set')
     tosolarsystem = models.ForeignKey('Mapsolarsystems', 
                                       related_name='to_solarsystem_set')
-    # TODO: Is this supposed to be a FK?
-    toconstellation_id = models.IntegerField()
-    # TODO: Is this supposed to be a FK?
-    toregion_id = models.IntegerField()
+    toconstellation = models.ForeignKey('Mapconstellations', 
+                                   related_name='toconstellationsys_jumps')
+    toregion = models.ForeignKey('Mapregions', 
+                                   related_name='toregionsys_jumps')
     
     class Meta:
         db_table = u'mapsolarsystemjumps'
@@ -989,10 +988,9 @@ class Stastations(models.Model):
     stationtype = models.ForeignKey('Stastationtypes')
     corporation = models.ForeignKey('Crpnpccorporations')
     solarsystem = models.ForeignKey('Mapsolarsystems')
-    # TODO: FK?
-    constellation_id = models.IntegerField()
-    # TODO: FK?
-    region_id = models.IntegerField()
+    constellation = models.ForeignKey('Mapconstellations',
+                                      related_name='station_constellation_set')
+    region = models.ForeignKey('Mapregions', related_name='station_regions_set')
     stationname = models.CharField(max_length=100)
     x = models.FloatField()
     y = models.FloatField()
