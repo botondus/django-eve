@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://www.w3.org/2005/10/profile">
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <meta name="description" content="Website for EVE alliance Systematic-Chaos." />
+   <meta name="keywords" content="eve, online, mmorpg, alliance, corporation" />
+   <title>SysK - {% block title %}{% if page_title %}{{page_title}}{% else %}Title Needed{% endif %}{% endblock %}</title>
+   <link rel="icon" type="image/png" href="{{MEDIA_URL}}img/favicon.png" />
+   <link rel="stylesheet" href="{{YUI_URL}}/reset-fonts-grids/reset-fonts-grids.css" type="text/css" />
+   <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}js/yui/base/base-min.css" />
+   <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style.css" media="screen" />
+   {% block extra_head %}
+   {% endblock %}
+</head>
+<body>
+<div id="doc3" class="yui-t2">
+   <!-- Header -->
+   <div id="hd">
+     <a href="/">
+       <img id="crest" src="{{MEDIA_URL}}img/pawCrossOars_sm.png" alt="Paw and Crossed Oars"/>
+     </a>
+     <a href="/">
+       <img id="slogan" src="{{MEDIA_URL}}img/slogan.png" alt="Clemson Crew: Every stroke is an opportunity" />
+     </a>
+   </div>
+   <div id="hd_gradient_div">
+     <!-- The fade-out thing. -->
+      {% if user.is_authenticated %}
+        Logged in as <a href="#">{{user.get_full_name}} ({{user.username}})</a>
+      {% else %}
+        <a href="#">Login</a> or <a href="#">Register</a>
+      {% endif %}
+   </div>
+   <!-- End Header -->
+   
+   <div id="bd">
+	<div id="yui-main">
+	<div class="yui-b">
+	<div class="yui-ge">
+	
+    <div class="yui-u first"> <!-- Center Column -->
+    {% if messages %}
+      {% for message in messages %}
+        <span class="message_block">{{ message }}</span>
+      {% endfor %}
+    {% endif %}
+             
+    {% if request.messages %}
+      {% for message in request.messages %}
+        <span class="message_block">{{ message }}</span>
+      {% endfor %}
+    {% endif %}
+    
+    {% block body %}
+    {% endblock %}
+    {% block content %}
+    {% endblock content %}
+    </div> <!-- End Center Column -->
+    
+    <div class="yui-u"> <!-- Right Column -->
+    {% block right_sidebar %}
+
+    {% if request.user.id %}
+    {% else %}
+      <div class="sidebar_block" style="margin-top:0px"> <!-- Begin Sidebar Block: Recruiting -->
+      <h1>Join Clemson Crew!</h1>
+      <p style="text-align:center">
+        <img src="{{MEDIA_URL}}uploaded_files/normal_hh03.jpg" alt="Join Clemson Crew" />
+        <br />
+        Looking to get in shape or join a great organization this Fall? Learn
+        more <a href="/pages/about/">about the team</a> and see our 
+        <a href="/pages/joining/">recruiting page</a>.
+      </p>
+      </div> <!-- End sidebar_block: Navigation -->
+    {% endif %}
+    
+      <div class="sidebar_block" style="margin-top:0px"> <!-- Begin Sidebar Block: Head Coach -->
+      <h1>Wanted: Head Coach</h1>
+      <p>
+        Recent performance and developments suggest a great season ahead. All
+        of the pieces are there for a great 2008-2009 season, aside from a head coach.
+      <br /><br />
+        Please see our <a href="/pages/headcoach/">Head Coach job posting</a> 
+        for more details.
+      </p>
+      </div> <!-- End sidebar_block: Navigation -->
+          
+    {% endblock %}
+    </div><!-- End Right Column -->
+    
+    </div> <!-- End yui-ge -->
+    </div> <!-- End yui-b -->
+	</div> <!-- End yui-main -->
+	
+	<!-- Left Column -->
+	<div class="yui-b">
+	
+      <div class="sidebar_block" style="margin-top:0px"> <!-- Begin Sidebar Block: Navigation -->
+      <h1>Navigation</h1>
+      <div class="navcontainer">
+        <ul class="navlist">
+        <li><a href="/">Home</a></li>
+        <li><a href="/pages/about/" title="About the Team">About the Team</a></li>
+        <li class="last_link"><a href="#">Workout System</a></li>
+        </ul>
+      </div> <!-- End navcontainer -->
+      </div> <!-- End sidebar_block: Navigation -->
+
+      <div class="sidebar_block"> <!-- Begin Sidebar Block: Navigation -->
+      <h1>My Account</h1>
+      <div class="navcontainer">
+        <ul class="navlist">
+        {% if user.is_authenticated %}
+          <li><a href="#">Profile</a></li>
+          {% if user.is_staff %}
+            <li><a href="/admin/">Admin</a></li>
+          {% endif %}
+          <li class="last_link"><a href="#">Logout</a></li>
+        {% else %}
+          <li><a href="/accounts/login/">Login</a></li>
+          <li class="last_link"><a href="#">Register</a></li>
+        {% endif %}
+        </ul>
+      </div> <!-- End navcontainer -->
+      </div> <!-- End sidebar_block: Navigation -->
+      
+    </div> <!-- End yui-b (Left sidebar) -->      
+   </div> <!-- End bd -->
+	
+   <!-- Footer -->
+   <div id="ft">Copyright, &copy; 2009 Greg Taylor</div>
+   {% if debug %}
+    <div id="debug">
+      <p>
+        {{ sql_queries|length }} Quer{{ sql_queries|pluralize:"y,ies" }}
+        {% ifnotequal sql_queries|length 0 %}
+        (<span style="cursor: pointer;" onclick="var s=document.getElementById('debugQueryTable').style;s.display=s.display=='none'?'':'none';this.innerHTML=this.innerHTML=='Show'?'Hide':'Show';">Show</span>)
+        {% endifnotequal %}
+      </p>
+      <table id="debugQueryTable" style="display: none;">
+        <col width="1"></col>
+        <col></col>
+        <col width="1"></col>
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">SQL</th>
+          <th scope="col">Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for query in sql_queries %}<tr class="{% cycle odd,even %}">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ query.sql|escape }}</td>
+          <td>{{ query.time }}</td>
+        </tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+   {% endif %}
+</div> <!-- End yui-t2 -->
+</body>
+</html>
+

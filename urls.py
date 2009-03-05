@@ -1,17 +1,20 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
+from django.contrib import admin
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^testgame/', include('testgame.foo.urls')),
-
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/(.*)', admin.site.root),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/(.*)', admin.site.root),
 )
+
+# If you'd like to serve media files via Django (strongly not recommended!),
+# open up your settings.py file and set SERVE_MEDIA to True. This is
+# appropriate on a developing site, or if you're running Django's built-in
+# test server. Normally you want a webserver that is optimized for serving
+# static content to handle media files (apache, lighttpd).
+if settings.SERVE_MEDIA:
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    )
