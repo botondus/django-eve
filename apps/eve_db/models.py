@@ -1,5 +1,23 @@
 from django.db import models
 
+class EVEPlayerCharacter(models.Model):
+    """
+    Represents an individual player character within the game. Not to be
+    confused with an account.
+    """
+    name = models.CharField(max_length=255, blank=True, null=False)
+    corporation = models.ForeignKey('EVEPlayerCorporation', blank=True, null=True)
+    # TODO: Choices field
+    race = models.IntegerField(blank=True, null=True)
+    # TODO: Choices field
+    gender = models.IntegerField(blank=True, null=True)
+    balance = models.FloatField(blank=True, null=True)
+    attrib_intelligence = models.IntegerField(blank=True, null=True)
+    attrib_memory = models.IntegerField(blank=True, null=True)
+    attrib_charisma = models.IntegerField(blank=True, null=True)
+    attrib_perception = models.IntegerField(blank=True, null=True)
+    attrib_willpower = models.IntegerField(blank=True, null=True)
+
 class EVEPlayerAlliance(models.Model):
     """
     Represents a player-controlled alliance. Updated from the alliance
@@ -28,7 +46,8 @@ class EVEPlayerCorporation(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     ticker = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    #ceo_character = models.ForeignKey(EVECharacter, blank=True, null=False)
+    url = models.URLField(verify_exists=False, blank=True, null=True)
+    ceo_character = models.ForeignKey(EVEPlayerCharacter, blank=True, null=False)
     #home_station = models.ForeignKey(EVEStation, blank=True, null=False)
     alliance = models.ForeignKey(EVEPlayerAlliance, blank=True, null=True)
     alliance_join_date = models.DateField(blank=True, null=True)

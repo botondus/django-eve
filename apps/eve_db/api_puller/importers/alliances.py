@@ -1,19 +1,26 @@
+#!/usr/bin/env python
+"""
+This module pulls the master alliance XML list from the API and dumps it in the
+api_puller/xml_cache directory as needed. All alliance data must be updated
+in bulk, which is done reasonably quickly.
+"""
 from xml.dom import minidom
 import os
 import sys
 from datetime import datetime
-from importer_defines import FRAMEWORK_BASE_PATH
 
-# Prepare the environment
-sys.path.insert(0, FRAMEWORK_BASE_PATH)
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings' 
+if __name__ == "__main__":
+    # Only mess with the environmental stuff if this is being ran directly.
+    from importer_path import fix_environment
+    fix_environment() 
+     
 from django.conf import settings
 from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
 
 # This stores a list of all corps whose alliance attribute has been updated.
 UPDATED_CORPS = []
 
-def update_corp_from_alliance_node(alliance_node, alliance):
+def __update_corp_from_alliance_node(alliance_node, alliance):
     """
     Updates a corp's alliance membership from an alliance <row> element.
     """
@@ -37,7 +44,7 @@ def update_corp_from_alliance_node(alliance_node, alliance):
         # Store the corp in the updated corps list for later checks.
         UPDATED_CORPS.append(corp.id)
         
-def remove_invalid_corp_alliance_memberships():
+def __remove_invalid_corp_alliance_memberships():
     """
     Compares UPDATED_CORPS list to the full list of player corporations. If
     the corporation was not updated from being found in one of the alliance
@@ -56,7 +63,7 @@ def remove_invalid_corp_alliance_memberships():
             corp.alliance = None
             corp.save()
 
-def start_import():
+def __start_import():
     print "Opening AllianceList.xml"
     xfile = open(os.path.join(settings.EVE_API_XML_CACHE_DIR, 
                               'AllianceList.xml'), 'r')
@@ -108,11 +115,11 @@ def start_import():
                                                   '%Y-%m-%d %H:%M:%S')
         alliance.save()
         # Update member corp alliance attributes.
-        update_corp_from_alliance_node(alliance_node, alliance)
+        __update_corp_from_alliance_node(alliance_node, alliance)
     
     print "Alliances and member corps updated."
     print "Removing corps alliance memberships that are no longer valid..."
-    remove_invalid_corp_alliance_memberships()
+    __remove_invalid_corp_alliance_memberships()
     
 if __name__ == "__main__":
-    start_import()
+    __start_import()

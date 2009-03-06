@@ -102,3 +102,7 @@ INSTALLED_APPS = (
 # EVE Stuff
 EVE_API_XML_CACHE_DIR = os.path.join(BASE_PATH, 'apps', 'eve_db', 'api_puller',
                                      'xml_cache')
+# A user ID to use to get API information.
+EVE_API_USER_ID = 3552139
+# A user limited or full API key for API querying.
+EVE_API_USER_KEY = 'HSZsAOHYjZj1VqyVvO04t5bPQbufUhuzbYdjrSxpeyHFpr7v4jhQFMbouaI2bxsw'
