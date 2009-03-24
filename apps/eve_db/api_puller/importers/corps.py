@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
 from django.conf import settings
 from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
-from importer_defines import retrieve_api_xml
+from apps.eve_proxy.models import CachedDocument
 
 def __update_corp(corp, xml_data):
     #print xml_data
@@ -71,9 +71,9 @@ def query_and_update_corp(corp):
     
     corp: (EVEPlayerCorporation)
     """
-    data = retrieve_api_xml('/corp/CorporationSheet.xml.aspx',
-                            other_parameters={'corporationID': corp.id})
-    __update_corp(corp, data)
+    corp_doc = CachedDocument.objects.api_query('/corp/CorporationSheet.xml.aspx',
+                                                params={'corporationID': corp.id})
+    __update_corp(corp, corp_doc.body)
 
 def __start_import():
     """

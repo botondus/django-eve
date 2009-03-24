@@ -47,7 +47,7 @@ class EVEPlayerCorporation(models.Model):
     ticker = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     url = models.URLField(verify_exists=False, blank=True, null=True)
-    ceo_character = models.ForeignKey(EVEPlayerCharacter, blank=True, null=False)
+    ceo_character = models.ForeignKey(EVEPlayerCharacter, blank=True, null=True)
     #home_station = models.ForeignKey(EVEStation, blank=True, null=False)
     alliance = models.ForeignKey(EVEPlayerAlliance, blank=True, null=True)
     alliance_join_date = models.DateField(blank=True, null=True)

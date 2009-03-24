@@ -16,6 +16,7 @@ if __name__ == "__main__":
      
 from django.conf import settings
 from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
+from apps.eve_proxy.models import CachedDocument
 
 # This stores a list of all corps whose alliance attribute has been updated.
 UPDATED_CORPS = []
@@ -64,11 +65,10 @@ def __remove_invalid_corp_alliance_memberships():
             corp.save()
 
 def __start_import():
-    print "Opening AllianceList.xml"
-    xfile = open(os.path.join(settings.EVE_API_XML_CACHE_DIR, 
-                              'AllianceList.xml'), 'r')
+    print "Querying /eve/AllianceList.xml.aspx/"
+    alliance_doc = CachedDocument.objects.api_query('/eve/AllianceList.xml.aspx')
     print "Parsing..."
-    dom = minidom.parse(xfile)
+    dom = minidom.parseString(alliance_doc.body)
     result_node_children = dom.getElementsByTagName('result')[0].childNodes
     
     # This will hold a reference to the <rowset name="alliances> Element.
