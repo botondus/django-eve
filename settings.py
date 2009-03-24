@@ -13,12 +13,18 @@ MANAGERS = ADMINS
 # sure to use Unix-style forward slashes, they are automatically translated.
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = os.path.join(BASE_PATH, 'django_eve.db3') # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+# 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'postgresql_psycopg2'
+# Or path to database file if using sqlite3.
+DATABASE_NAME = 'django_eve'
+# Not used with sqlite3.
+DATABASE_USER = 'django_eve'
+# Not used with sqlite3.
+DATABASE_PASSWORD = 'django_eve'
+# Set to empty string for localhost. Not used with sqlite3.         
+DATABASE_HOST = ''
+# Set to empty string for default. Not used with sqlite3.             
+DATABASE_PORT = ''
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
