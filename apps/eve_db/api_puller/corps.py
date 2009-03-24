@@ -83,6 +83,7 @@ def __start_import():
         member_corps = alliance.eveplayercorporation_set.all()
         # We're getting the list of corps to update from alliance memberships.
         for corp in member_corps:
+            print "Querying", corp.id
             query_and_update_corp(corp)
     
 if __name__ == "__main__":

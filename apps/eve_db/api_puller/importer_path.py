@@ -1,7 +1,7 @@
 import os
 import sys
 # The path to the folder containing settings.py.
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 def fix_environment():
     """
