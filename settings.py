@@ -109,3 +109,13 @@ INSTALLED_APPS = (
 EVE_API_USER_ID = 3552139
 # A user limited or full API key for API querying.
 EVE_API_USER_KEY = 'HSZsAOHYjZj1VqyVvO04t5bPQbufUhuzbYdjrSxpeyHFpr7v4jhQFMbouaI2bxsw'
+
+"""
+This makes any settings in local_settings.py take precedence over the ones
+seen here. Make any local modifications to local_settings.py rather than
+editing this file directly.
+"""
+try:
+     from local_settings import *
+except ImportError:
+     pass
