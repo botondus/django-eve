@@ -64,7 +64,12 @@ def __remove_invalid_corp_alliance_memberships():
             corp.alliance = None
             corp.save()
 
-def __start_import():
+def __start_full_import():
+    """
+    This method runs a full import of all known alliances. This may take a few
+    minutes and should be ran regularly if you are maintaining a full corp
+    list of all EVE corps as well.
+    """
     print "Querying /eve/AllianceList.xml.aspx/"
     alliance_doc = CachedDocument.objects.api_query('/eve/AllianceList.xml.aspx')
     print "Parsing..."
@@ -122,4 +127,4 @@ def __start_import():
     __remove_invalid_corp_alliance_memberships()
     
 if __name__ == "__main__":
-    __start_import()
+    __start_full_import()

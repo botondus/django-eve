@@ -10,6 +10,7 @@ an individual corp object as need be.
 NOTE: To get corp data, it must be a member of an alliance.
 """
 from xml.dom import minidom
+from xml.parsers.expat import ExpatError
 import os
 import sys
 from datetime import datetime
@@ -24,8 +25,14 @@ from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
 from apps.eve_proxy.models import CachedDocument
 
 def __update_corp(corp, xml_data):
-    #print xml_data
-    dom = minidom.parseString(xml_data)
+    """
+    This is an internal method called by query_and_update_corp() that takes
+    the XML data from the EVE API servers and applies it to populating an
+    EVEPlayerCorporation object.
+    """
+    # Convert incoming data to UTF-8.
+    dom = minidom.parseString(xml_data.decode("utf-8", "replace"))
+        
     if len(dom.getElementsByTagName('error code')) > 0:
         # This corp is probably not in an alliance anymore. The API only lets
         # you get info on corps in alliances.
@@ -67,24 +74,50 @@ def __update_corp(corp, xml_data):
     
 def query_and_update_corp(corp):
     """
-    Just updates one corp object.
+    Takes an EVEPlayerCorporation object and updates it from the 
+    EVE API service.
     
     corp: (EVEPlayerCorporation)
     """
+    # Pull XML from the EVE API via eve_proxy.
     corp_doc = CachedDocument.objects.api_query('/corp/CorporationSheet.xml.aspx',
                                                 params={'corporationID': corp.id})
+    # Update the EVEPlayerCorporation object with the API XML.
     __update_corp(corp, corp_doc.body)
 
-def __start_import():
+def __start_full_import():
     """
     Imports all of the corps that are in all of the known alliances.
+    
+    WARNING: THIS WILL TAKE A _LONG_ TIME AND MUST BE RAN AFTER
+    eve_db.api_puller.alliances.__start_full_import() OR YOU WON'T GET ALL
+    OF THE CORPS (or any at all).
     """
-    for alliance in EVEPlayerAlliance.objects.all():
+    alliances = EVEPlayerAlliance.objects.all()
+    
+    # These two variables are used to track progress.
+    alliance_count = alliances.count()
+    # Use this as a progress indicator.
+    current_alliance_num = 1
+    
+    for alliance in alliances:
+        # Keep the user informed as to the progress.
+        print "Alliance %d of %d..." % (current_alliance_num, alliance_count)
+        # A list of the alliance's member corps.
         member_corps = alliance.eveplayercorporation_set.all()
         # We're getting the list of corps to update from alliance memberships.
         for corp in member_corps:
             print "Querying", corp.id
             query_and_update_corp(corp)
+            
+        # Increment progress counter.
+        current_alliance_num += 1
     
 if __name__ == "__main__":
-    __start_import()
+    """
+    If ran directly, this will grab all of the corps from the known alliances.
+    
+    WARNING: THIS WILL TAKE A VERY LONG TIME TO RUN! IT IS SUGGESTED YOU ONLY
+    GRAB CORPS AS YOU NEED THEM.
+    """
+    __start_full_import()
