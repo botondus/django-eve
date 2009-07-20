@@ -1,4 +1,7 @@
+from xml.dom import minidom
 from django.db import models
+from apps.eve_db.managers import EVEPlayerCorporationManager
+from apps.eve_proxy.models import CachedDocument
 
 class EVEPlayerCharacter(models.Model):
     """
@@ -36,7 +39,7 @@ class EVEPlayerAlliance(models.Model):
         if self.name:
             return self.name
         else:
-            return "Alliance #%d" % self.id  
+            return "Alliance #%d" % self.id
 
 class EVEPlayerCorporation(models.Model):
     """
@@ -63,9 +66,54 @@ class EVEPlayerCorporation(models.Model):
     logo_color1 = models.IntegerField(blank=True, null=True)
     logo_color2 = models.IntegerField(blank=True, null=True)
     logo_color3 = models.IntegerField(blank=True, null=True)
+    
+    objects = EVEPlayerCorporationManager()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.name:
             return self.name
         else:
             return "Corp #%d" % self.id
+        
+    def query_and_update_corp(self):
+        """
+        Takes an EVEPlayerCorporation object and updates it from the 
+        EVE API service.
+        """
+        # Pull XML from the EVE API via eve_proxy.
+        dom = EVEPlayerCorporation.objects.api_corp_sheet_xml(self.id)
+        
+        # Tuples of pairings of tag names and the attribute on the Corporation
+        # object to set the data to.
+        tag_mappings = (
+            ('corporationName', 'name'),
+            ('ticker', 'ticker'),
+            ('url', 'url'),
+            ('description', 'description'),
+            ('memberCount', 'member_count'),
+            ('graphicID', 'logo_graphic_id'),
+            ('shape1', 'logo_shape1'),
+            ('shape2', 'logo_shape2'),
+            ('shape3', 'logo_shape3'),
+            ('color1', 'logo_color1'),
+            ('color2', 'logo_color2'),
+            ('color3', 'logo_color3'),
+        )
+        
+        # Iterate through the tag mappings, setting the values of the tag names
+        # (first member of the tuple) to the attribute named in the second member
+        # of the tuple on the EVEPlayerCorporation object.
+        for tag_map in tag_mappings:
+            try:
+                setattr(self, tag_map[1], 
+                        dom.getElementsByTagName(tag_map[0])[0].firstChild.nodeValue)
+            except AttributeError:
+                # This tag has no value, skip it.
+                continue
+            except IndexError:
+                # Something weird has happened
+                print " * Index Error:", tag_map[0]
+                continue
+
+        print "Updating", self.id, self.name
+        self.save()
