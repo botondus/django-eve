@@ -101,8 +101,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django_extensions',
-    'apps.eve_db',
     'eve_proxy',
+    'apps.eve_db',
 )
 
 # A user ID to use to get API information.

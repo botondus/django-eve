@@ -1,7 +1,7 @@
 from xml.dom import minidom
 from django.db import models
+from eve_proxy.models import CachedDocument
 from apps.eve_db.managers import EVEPlayerCorporationManager
-from apps.eve_proxy.models import CachedDocument
 
 class EVEPlayerCharacter(models.Model):
     """

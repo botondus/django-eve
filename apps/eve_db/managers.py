@@ -1,6 +1,6 @@
 from xml.dom import minidom
 from django.db import models
-from apps.eve_proxy.models import CachedDocument
+from eve_proxy.models import CachedDocument
 
 class InvalidCorpID(Exception):
     """
