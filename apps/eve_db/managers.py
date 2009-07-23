@@ -11,6 +11,40 @@ class InvalidCorpID(Exception):
         
     def __str___(self):
         return repr(self.value)
+    
+def _api_get_id_from_name(name):
+    """
+    Queries the EVE API looking for the ID of the specified corporation,
+    alliance, or character based on its name. This is not case sensitive.
+    
+    name: (str) Corporation name to search for.
+    """
+    query_doc = CachedDocument.objects.api_query('/eve/CharacterID.xml.aspx',
+                                                 params={'names': name})
+    query_dat = query_doc.body.decode("utf-8", "replace")
+    dom = minidom.parseString(query_dat)
+    
+    id_node = dom.getElementsByTagName('row')[0]
+    object_id = id_node.getAttribute('characterID')
+    
+    if object_id == '0':
+        raise self.model.DoesNotExist('EVE API returned no matches for the provided corp name.')
+    else:
+        return int(object_id)
+    
+class EVEPlayerCharacterManager(models.Manager):
+    def api_get_id_from_name(self, name):
+        """
+        This uses a common call for corps, characters, and alliances.
+        """
+        return _api_get_id_from_name(name)
+
+class EVEPlayerAllianceManager(models.Manager):
+    def api_get_id_from_name(self, name):
+        """
+        This uses a common call for corps, characters, and alliances.
+        """
+        return _api_get_id_from_name(name)
 
 class EVEPlayerCorporationManager(models.Manager):
     def get_or_query_by_id(self, corp_id):
@@ -32,25 +66,11 @@ class EVEPlayerCorporationManager(models.Manager):
             except InvalidCorpID:
                 raise
     
-    def api_get_id_by_name(self, name):
+    def api_get_id_from_name(self, name):
         """
-        Queries the EVE API looking for the ID of the specified corporation
-        based on its name. This is not case sensitive.
-        
-        name: (str) Corporation name to search for.
+        This uses a common call for corps, characters, and alliances.
         """
-        corp_doc = CachedDocument.objects.api_query('/eve/CharacterID.xml.aspx',
-                                                    params={'names': name})
-        corp_dat = corp_doc.body.decode("utf-8", "replace")
-        dom = minidom.parseString(corp_dat)
-        
-        characters_node = dom.getElementsByTagName('row')[0]
-        corp_id = characters_node.getAttribute('characterID')
-        
-        if corp_id == '0':
-            raise self.model.DoesNotExist('EVE API returned no matches for the provided corp name.')
-        else:
-            return int(corp_id)
+        return _api_get_id_from_name(name)
         
     def api_corp_sheet_xml(self, id):
         """

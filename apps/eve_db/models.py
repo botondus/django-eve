@@ -1,7 +1,7 @@
 from xml.dom import minidom
 from django.db import models
 from eve_proxy.models import CachedDocument
-from apps.eve_db.managers import EVEPlayerCorporationManager
+from apps.eve_db.managers import EVEPlayerCorporationManager, EVEPlayerAllianceManager, EVEPlayerCharacterManager
 
 class EVEPlayerCharacter(models.Model):
     """
@@ -20,6 +20,8 @@ class EVEPlayerCharacter(models.Model):
     attrib_charisma = models.IntegerField(blank=True, null=True)
     attrib_perception = models.IntegerField(blank=True, null=True)
     attrib_willpower = models.IntegerField(blank=True, null=True)
+    
+    objects = EVEPlayerCharacterManager()
 
 class EVEPlayerAlliance(models.Model):
     """
@@ -31,6 +33,8 @@ class EVEPlayerAlliance(models.Model):
     #executor_character = models.ForeignKey(EVECharacter, blank=True, null=False)
     member_count = models.IntegerField(blank=True, null=True)
     date_founded = models.DateField(blank=True, null=True)
+    
+    objects = EVEPlayerAllianceManager()
     
     class Meta:
         ordering = ['date_founded']
