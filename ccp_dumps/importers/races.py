@@ -11,7 +11,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVERace
+from apps.eve_db.models import EVERace, EVEGraphic
 
 def do_import():
     """
@@ -26,6 +26,11 @@ def do_import():
         race.name = row['raceName']
         race.short_description = row['shortDescription']
         race.description = row['description']
+        
+        graphic_id = row['graphicID']
+        if graphic_id:
+            race.graphic = EVEGraphic.objects.get(id=graphic_id)
+
         race.save()
 
     # Clean up.

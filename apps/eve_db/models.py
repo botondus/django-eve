@@ -2,12 +2,88 @@ from xml.dom import minidom
 from django.db import models
 from eve_proxy.models import CachedDocument
 from apps.eve_db.managers import EVEPlayerCorporationManager, EVEPlayerAllianceManager, EVEPlayerCharacterManager
+    
+class EVEGraphic(models.Model):
+    """
+    Stored graphic model.
+    """
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    # Name of the file, should be two numbers separated by underscore, no extension.
+    icon_filename = models.CharField(max_length=50)
+    is_published = models.BooleanField(default=True)
+    is_obsolete = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Graphic'
+        verbose_name_plural = 'Graphics'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVEInventoryCategory(models.Model):
+    """
+    Inventory categories are the top level classification for all items, be
+    it planets, moons, modules, ships, or any other entity within the game
+    that physically exists.
+    """
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    is_published = models.BooleanField(default=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Category'
+        verbose_name_plural = 'Inventory Categories'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVEInventoryGroup(models.Model):
+    """
+    Inventory groups are a further sub-classification within an 
+    EVEInventoryCategory. For example, the 'Region' inventory group's
+    category is 'Celestial'.
+    """
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    category = models.ForeignKey(EVEInventoryCategory)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    use_base_price = models.BooleanField(default=False)
+    allow_manufacture = models.BooleanField(default=True)
+    allow_recycle = models.BooleanField(default=True)
+    allow_anchoring = models.BooleanField(default=False)
+    is_anchored = models.BooleanField(default=False)
+    is_fittable_non_singleton = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Group'
+        verbose_name_plural = 'Inventory Groups'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
 
 class EVERace(models.Model):
+    """
+    An EVE race.
+    """
     name = models.CharField(max_length=30)
     short_description = models.TextField(blank=True)
     description = models.TextField(blank=True)
-    #graphic = models.ForeignKey(EVEGraphic)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
     
     class Meta:
         ordering = ['id']

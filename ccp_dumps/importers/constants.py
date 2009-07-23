@@ -15,3 +15,12 @@ def setup_environment():
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     sys.path.insert(0, project_root)
     os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+    
+def parse_int_bool(int_bool):
+    """
+    Takes an int and converts it to a bool in the basis of 1=True, 0=False.
+    """
+    if int_bool == 1:
+        return True
+    else:
+        return False

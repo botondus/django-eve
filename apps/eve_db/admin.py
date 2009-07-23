@@ -1,6 +1,18 @@
 from django.contrib import admin
 from apps.eve_db.models import *
 
+class EVEInventoryCategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description', 'is_published')
+admin.site.register(EVEInventoryCategory, EVEInventoryCategoryAdmin)
+
+class EVEInventoryGroupAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'description')
+admin.site.register(EVEInventoryGroup, EVEInventoryGroupAdmin)
+
+class EVEGraphicAdmin(admin.ModelAdmin):
+    list_display = ('id', 'description', 'name', 'icon_filename')
+admin.site.register(EVEGraphic, EVEGraphicAdmin)
+
 class EVERaceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'short_description')
 admin.site.register(EVERace, EVERaceAdmin)
