@@ -1,12 +1,14 @@
 from django.contrib import admin
 from apps.eve_db.models import *
 
+class EVERaceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'short_description')
+admin.site.register(EVERace, EVERaceAdmin)
+
 class EVEPlayerCorporationInline(admin.TabularInline):
     model = EVEPlayerCorporation
     fields = ('name', 'ticker')
     extra = 0
-    verbose_name = 'Member Corporation'
-    verbose_name_plural = 'Member Corporations'
 
 class EVEPlayerAllianceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'ticker', 'member_count', 'date_founded')

@@ -3,6 +3,23 @@ from django.db import models
 from eve_proxy.models import CachedDocument
 from apps.eve_db.managers import EVEPlayerCorporationManager, EVEPlayerAllianceManager, EVEPlayerCharacterManager
 
+class EVERace(models.Model):
+    name = models.CharField(max_length=30)
+    short_description = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    #graphic = models.ForeignKey(EVEGraphic)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Race'
+        verbose_name_plural = 'Races'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+
 class EVEPlayerCharacter(models.Model):
     """
     Represents an individual player character within the game. Not to be
@@ -22,6 +39,10 @@ class EVEPlayerCharacter(models.Model):
     attrib_willpower = models.IntegerField(blank=True, null=True)
     
     objects = EVEPlayerCharacterManager()
+    
+    class Meta:
+        verbose_name = 'Member Corporation'
+        verbose_name_plural = 'Member Corporations'
 
 class EVEPlayerAlliance(models.Model):
     """
@@ -44,6 +65,9 @@ class EVEPlayerAlliance(models.Model):
             return self.name
         else:
             return "Alliance #%d" % self.id
+        
+    def __str__(self):
+        return self.__unicode__()
 
 class EVEPlayerCorporation(models.Model):
     """
