@@ -12,7 +12,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVEGraphic, EVEInventoryCategory, EVEInventoryGroup
+from apps.eve_db.models import EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup
 
 def do_import_categories(conn):
     """
@@ -73,12 +73,40 @@ def do_import_groups(conn):
     # Clean up.
     c.close()
     
+def do_import_market_groups(conn):
+    """
+    Handle the import.
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from invMarketGroups'):
+        group, created = EVEMarketGroup.objects.get_or_create(id=row['marketGroupID'])
+        group.name = row['marketGroupName']
+        group.description = row['description']
+        
+        graphic_id = row['graphicID']
+        if graphic_id:
+            group.graphic = EVEGraphic.objects.get(id=graphic_id)
+            
+        parent_id = row['parentGroupID']
+        if parent_id:
+            parent, created = EVEMarketGroup.objects.get_or_create(id=parent_id)
+            group.parent = parent
+            
+        group.has_items = constants.parse_int_bool(row['hasTypes'])
+
+        group.save()
+
+    # Clean up.
+    c.close()
+    
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
     
     do_import_categories(conn)
     do_import_groups(conn)
+    do_import_market_groups(conn)
 
 if __name__ == "__main__":
     do_import()

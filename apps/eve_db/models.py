@@ -25,6 +25,27 @@ class EVEGraphic(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEMarketGroup(models.Model):
+    """
+    Market groups are used to group items together in the market browser.
+    """
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    parent = models.ForeignKey('EVEMarketGroup', blank=True, null=True)
+    has_items = models.BooleanField(default=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Market Group'
+        verbose_name_plural = 'Market Groups'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEInventoryCategory(models.Model):
     """
     Inventory categories are the top level classification for all items, be
