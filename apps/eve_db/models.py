@@ -97,6 +97,28 @@ class EVEInventoryGroup(models.Model):
     def __str__(self):
         return self.__unicode__()
 
+class EVEItemType(models.Model):
+    """
+    Inventory categories are the top level classification for all items, be
+    it planets, moons, modules, ships, or any other entity within the game
+    that physically exists.
+    """
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    is_published = models.BooleanField(default=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Category'
+        verbose_name_plural = 'Inventory Categories'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+
 class EVERace(models.Model):
     """
     An EVE race.
