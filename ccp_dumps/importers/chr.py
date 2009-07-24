@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Import race data.
+Import character data.
 
 Tables imported:
 chrRaces
@@ -13,12 +13,10 @@ if __name__ == "__main__":
     constants.setup_environment()
 from apps.eve_db.models import EVERace, EVEGraphic
 
-def do_import():
+def do_import_races(conn):
     """
     Handle the import.
     """
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
     c = conn.cursor()
     
     for row in c.execute('select * from chrRaces'):
@@ -35,6 +33,12 @@ def do_import():
 
     # Clean up.
     c.close()
+
+def do_import():
+    conn = sqlite3.connect(constants.DB_FILE)
+    conn.row_factory = sqlite3.Row
+    
+    do_import_races(conn)
 
 if __name__ == "__main__":
     do_import()
