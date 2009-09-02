@@ -1,11 +1,11 @@
 In order to import the CCP data, you will first need to download the SQLite
 dumps from: 
 
-    http://eve.no-ip.de/apo131/
+    http://eve.no-ip.de/apo15/
     
 At the time of this document's writing, the file name is:
 
-    apo131-sqlite3-v1.db.bz2
+    apo15-sqlite3-v1.db.bz2
     
 You do -NOT- want the eam version. It is stripped down a lot and is missing
 all kinds of information that we use.
