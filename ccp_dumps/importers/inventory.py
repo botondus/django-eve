@@ -12,7 +12,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup
+from apps.eve_db.models import EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType
 
 def do_import_categories(conn):
     """
@@ -100,6 +100,42 @@ def do_import_market_groups(conn):
     # Clean up.
     c.close()
     
+def do_import_invtypes(conn):
+    """
+    Handle the import.
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from invTypes'):
+        invtype, created = EVEInventoryType.objects.get_or_create(id=row['typeID'])
+        invtype.name = row['typeName']
+        invtype.description = row['description']
+        invtype.group = EVEInventoryGroup.objects.get(id=row['groupID'])
+        invtype.radius = row['radius']
+        invtype.mass = row['mass']
+        invtype.volume = row['volume']
+        invtype.capacity = row['capacity']
+        invtype.portion_size = row['portionSize']
+        
+        if row['marketGroupID']:
+            invtype.market_group = EVEMarketGroup.objects.get(id=row['marketGroupID'])
+        
+        if row['published'] == 1:
+            invtype.is_published = True
+        
+        if row['raceID']:
+            invtype.race = EVERace.objects.get(id=row['raceID'])
+            
+        if row['graphicID']:
+            #print row['graphicID']
+            invtype.graphic = EVEGraphic.objects.get(id=row['graphicID'])
+            
+        invtype.chance_of_duplicating = row['chanceOfDuplicating']
+        invtype.save()
+
+    # Clean up.
+    c.close()
+    
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
@@ -107,6 +143,7 @@ def do_import():
     do_import_categories(conn)
     do_import_groups(conn)
     do_import_market_groups(conn)
+    do_import_invtypes(conn)
 
 if __name__ == "__main__":
     do_import()

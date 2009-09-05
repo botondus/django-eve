@@ -13,6 +13,8 @@ if __name__ == "__main__":
     constants.setup_environment()
 from apps.eve_db.models import EVEGraphic
 
+print constants.DB_FILE
+
 def do_import():
     """
     Handle the import.

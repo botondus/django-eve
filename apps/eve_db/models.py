@@ -74,9 +74,9 @@ class EVEInventoryGroup(models.Model):
     EVEInventoryCategory. For example, the 'Region' inventory group's
     category is 'Celestial'.
     """
-    name = models.CharField(max_length=100)
+    category = models.ForeignKey(EVEInventoryCategory, blank=True, null=True)
+    name = models.CharField(max_length=150)
     description = models.TextField()
-    category = models.ForeignKey(EVEInventoryCategory)
     graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
     use_base_price = models.BooleanField(default=False)
     allow_manufacture = models.BooleanField(default=True)
@@ -90,6 +90,39 @@ class EVEInventoryGroup(models.Model):
         ordering = ['id']
         verbose_name = 'Inventory Group'
         verbose_name_plural = 'Inventory Groups'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVEInventoryType(models.Model):
+    """
+    Inventory types are generally objects that can be carried in your
+    inventory (with the exception of suns, moons, planets, etc.) These are mostly
+    market items, along with some basic attributes of each that are common
+    to all items. 
+    """
+    name = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    group = models.ForeignKey(EVEInventoryGroup, blank=True, null=True)
+    market_group = models.ForeignKey(EVEMarketGroup, blank=True, null=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    radius = models.FloatField(blank=True, null=True)
+    mass = models.FloatField(blank=True, null=True)
+    volume = models.FloatField(blank=True, null=True)
+    capacity = models.FloatField(blank=True, null=True)
+    portion_size = models.IntegerField(blank=True, null=True)
+    race = models.ForeignKey('EVERace', blank=True, null=True)
+    base_price = models.FloatField(blank=True, null=True)
+    is_published = models.BooleanField(default=False)
+    chance_of_duplicating = models.FloatField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Type'
+        verbose_name_plural = 'Inventory Types'
         
     def __unicode__(self):
         return self.name
