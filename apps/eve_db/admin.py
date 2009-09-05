@@ -9,6 +9,10 @@ class EVEInventoryGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'description')
 admin.site.register(EVEInventoryGroup, EVEInventoryGroupAdmin)
 
+class EVEInventoryTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'group', 'market_group', 'description')
+admin.site.register(EVEInventoryType, EVEInventoryTypeAdmin)
+
 class EVEGraphicAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'name', 'icon_filename')
 admin.site.register(EVEGraphic, EVEGraphicAdmin)
@@ -30,6 +34,6 @@ class EVEPlayerAllianceAdmin(admin.ModelAdmin):
 admin.site.register(EVEPlayerAlliance, EVEPlayerAllianceAdmin)
 
 class EVEPlayerCorporationAdmin(admin.ModelAdmin):
-    list_display = ('id', '__unicode__', 'ticker', 'member_count', 'alliance')
+    list_display = ('id', 'name', 'ticker', 'member_count', 'alliance')
     search_fields = ['name', 'ticker']
 admin.site.register(EVEPlayerCorporation, EVEPlayerCorporationAdmin)
