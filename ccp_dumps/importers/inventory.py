@@ -12,7 +12,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType
+from apps.eve_db.models import EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType, EVEInventoryBlueprintType
 
 def do_import_categories(conn):
     """
@@ -136,6 +136,35 @@ def do_import_invtypes(conn):
     # Clean up.
     c.close()
     
+def do_import_blueprint_types(conn):
+    """
+    Import blueprint types.
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from invBlueprintTypes'):
+        blueprint_type = EVEInventoryType.objects.get(id=row['blueprintTypeID'])
+        product_type = EVEInventoryType.objects.get(id=row['productTypeID'])
+        invtype, created = EVEInventoryBlueprintType.objects.get_or_create(blueprint_type=blueprint_type,
+                                                                           product_type=product_type)
+        if row['parentBlueprintTypeID']:
+            invtype.parent_blueprint_Type = EVEInventoryType.objects.get(id=row['parentBlueprintTypeID'])
+            
+        invtype.tech_level = row['techLevel']
+        invtype.research_productivity_time = row['researchProductivityTime']
+        invtype.research_material_time = row['researchMaterialTime']
+        invtype.research_copy_time = row['researchCopyTime']
+        invtype.research_tech_time = row['researchTechTime']
+        invtype.productivity_modifier = row['productivityModifier']
+        invtype.material_modifier = row['materialModifier']
+        invtype.waste_factor = row['wasteFactor']
+        invtype.max_production_limit = row['maxProductionLimit']
+
+        invtype.save()
+
+    # Clean up.
+    c.close()
+    
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
@@ -144,6 +173,7 @@ def do_import():
     do_import_groups(conn)
     do_import_market_groups(conn)
     do_import_invtypes(conn)
+    do_import_blueprint_types(conn)
 
 if __name__ == "__main__":
     do_import()

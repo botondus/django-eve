@@ -134,28 +134,31 @@ class EVEInventoryBlueprintType(models.Model):
     """
     Stores info about each kind of blueprint.
     """
-    name = models.CharField(max_length=100, blank=True)
-    description = models.TextField(blank=True)
-    group = models.ForeignKey(EVEInventoryGroup, blank=True, null=True)
-    market_group = models.ForeignKey(EVEMarketGroup, blank=True, null=True)
-    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
-    radius = models.FloatField(blank=True, null=True)
-    mass = models.FloatField(blank=True, null=True)
-    volume = models.FloatField(blank=True, null=True)
-    capacity = models.FloatField(blank=True, null=True)
-    portion_size = models.IntegerField(blank=True, null=True)
-    race = models.ForeignKey('EVERace', blank=True, null=True)
-    base_price = models.FloatField(blank=True, null=True)
-    is_published = models.BooleanField(default=False)
-    chance_of_duplicating = models.FloatField(blank=True, null=True)
-    
+    blueprint_type = models.ForeignKey(EVEInventoryType,
+                                       related_name='blueprint_type_set')
+    product_type = models.ForeignKey(EVEInventoryType,
+                                     related_name='blueprint_product_type_set')
+    # This is used for T2. Not always populated.
+    parent_blueprint_type = models.ForeignKey(EVEInventoryType, blank=True,
+                                              null=True,
+                                              related_name='parent_blueprint_type_set')
+    tech_level = models.IntegerField(blank=True, null=True)
+    research_productivity_time = models.IntegerField(blank=True, null=True)
+    research_material_time = models.IntegerField(blank=True, null=True)
+    research_copy_time = models.IntegerField(blank=True, null=True)
+    research_tech_time = models.IntegerField(blank=True, null=True)
+    productivity_modifier = models.IntegerField(blank=True, null=True)
+    material_modifier = models.IntegerField(blank=True, null=True)
+    waste_factor = models.IntegerField(blank=True, null=True)
+    max_production_limit = models.IntegerField(blank=True, null=True)
+
     class Meta:
         ordering = ['id']
-        verbose_name = 'Inventory Type'
-        verbose_name_plural = 'Inventory Types'
+        verbose_name = 'Blueprint Type'
+        verbose_name_plural = 'Blueprint Types'
         
     def __unicode__(self):
-        return self.name
+        return "BP: %s" % self.product_type
     
     def __str__(self):
         return self.__unicode__()
