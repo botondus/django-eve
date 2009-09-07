@@ -129,22 +129,30 @@ class EVEInventoryType(models.Model):
     
     def __str__(self):
         return self.__unicode__()
-
-class EVEItemType(models.Model):
+    
+class EVEInventoryBlueprintType(models.Model):
     """
-    Inventory categories are the top level classification for all items, be
-    it planets, moons, modules, ships, or any other entity within the game
-    that physically exists.
+    Stores info about each kind of blueprint.
     """
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=255)
-    is_published = models.BooleanField(default=True)
+    name = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    group = models.ForeignKey(EVEInventoryGroup, blank=True, null=True)
+    market_group = models.ForeignKey(EVEMarketGroup, blank=True, null=True)
     graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    radius = models.FloatField(blank=True, null=True)
+    mass = models.FloatField(blank=True, null=True)
+    volume = models.FloatField(blank=True, null=True)
+    capacity = models.FloatField(blank=True, null=True)
+    portion_size = models.IntegerField(blank=True, null=True)
+    race = models.ForeignKey('EVERace', blank=True, null=True)
+    base_price = models.FloatField(blank=True, null=True)
+    is_published = models.BooleanField(default=False)
+    chance_of_duplicating = models.FloatField(blank=True, null=True)
     
     class Meta:
         ordering = ['id']
-        verbose_name = 'Inventory Category'
-        verbose_name_plural = 'Inventory Categories'
+        verbose_name = 'Inventory Type'
+        verbose_name_plural = 'Inventory Types'
         
     def __unicode__(self):
         return self.name
