@@ -130,6 +130,27 @@ class EVEInventoryType(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEResearchMfgActivities(models.Model):
+    """
+    Research and Manufacturing activities.
+    """
+    name = models.CharField(max_length=75, blank=True)
+    description = models.CharField(max_length=100, blank=True)
+    # Name of the file, should be two numbers separated by underscore, no extension.
+    icon_filename = models.CharField(max_length=50, blank=True)
+    is_published = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Research and Mfg activity'
+        verbose_name_plural = 'Research and Mfg activities'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEInventoryBlueprintType(models.Model):
     """
     Stores info about each kind of blueprint.

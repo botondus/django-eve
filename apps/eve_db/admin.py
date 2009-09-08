@@ -17,6 +17,10 @@ class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)
 
+class EVEResearchMfgActivitiesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description', 'icon_filename', 'is_published')
+admin.site.register(EVEResearchMfgActivities, EVEResearchMfgActivitiesAdmin)
+
 class EVEGraphicAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'name', 'icon_filename')
 admin.site.register(EVEGraphic, EVEGraphicAdmin)
