@@ -10,6 +10,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 # Import the importer modules.
 from importers import chr, graphics, inventory, stations, attributesandeffects
 
+print "NOTE: This is going to take anywhere from 15-30 minutes depending on the speed of your computer and DB server. You may abort it at any time and re-start it later via CTRL-D or CTRL-C, depending on your platform."
 print "Importing from the CCP dump..."
 
 # Carry out the imports in order.
