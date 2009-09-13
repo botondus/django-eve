@@ -12,7 +12,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType, EVEInventoryBlueprintType, EVETypeActivityMaterials, EVEResearchMfgActivities
+from apps.eve_db.models import EVEName, EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType, EVEInventoryBlueprintType, EVETypeActivityMaterials, EVEResearchMfgActivities
 
 def do_import_categories(conn):
     """
@@ -186,17 +186,32 @@ def do_import_activity_materials(conn):
 
     # Clean up.
     c.close()
+    
+def do_import_eve_names(conn):
+    """
+    Import eveNames table.
+    """
+    c = conn.cursor()
+    for row in c.execute('select * from eveNames'):
+        imp_obj, created = EVEName.objects.get_or_create(id=row['itemID'])
+        imp_obj.name = row['itemName']
+        imp_obj.category = EVEInventoryCategory.objects.get(id=row['categoryID'])
+        imp_obj.group = EVEInventoryGroup.objects.get(id=row['groupID'])
+        imp_obj.type = EVEInventoryType.objects.get(id=row['typeID'])
+        imp_obj.save()
+    c.close()
         
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
     
-    do_import_categories(conn)
-    do_import_groups(conn)
-    do_import_market_groups(conn)
-    do_import_invtypes(conn)
-    do_import_blueprint_types(conn)
-    do_import_activity_materials(conn)
+    #do_import_categories(conn)
+    #do_import_groups(conn)
+    #do_import_market_groups(conn)
+    #do_import_invtypes(conn)
+    #do_import_blueprint_types(conn)
+    #do_import_activity_materials(conn)
+    do_import_eve_names(conn)
 
 if __name__ == "__main__":
     do_import()

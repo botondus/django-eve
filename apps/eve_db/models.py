@@ -25,6 +25,31 @@ class EVEGraphic(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEName(models.Model):
+    """
+    This appears to be something used to search everything at once. Most of
+    the stuff in this table have models with a 'name' field on them. The CCP
+    dump doesn't use the eveNames table directly many times.
+    
+    Things covered by this model include space objects, corporations, and
+    people.
+    """
+    name = models.CharField(max_length=50)
+    category = models.ForeignKey('EVEInventoryCategory', blank=True, null=True)
+    group = models.ForeignKey('EVEInventoryGroup', blank=True, null=True)
+    type = models.ForeignKey('EVEInventoryType', blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Name'
+        verbose_name_plural = 'Names'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEMarketGroup(models.Model):
     """
     Market groups are used to group items together in the market browser.

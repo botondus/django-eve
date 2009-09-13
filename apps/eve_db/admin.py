@@ -45,6 +45,10 @@ class EVEGraphicAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'name', 'icon_filename')
 admin.site.register(EVEGraphic, EVEGraphicAdmin)
 
+class EVENameAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'group', 'type')
+admin.site.register(EVEName, EVENameAdmin)
+
 class EVERaceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'short_description')
 admin.site.register(EVERace, EVERaceAdmin)
