@@ -21,6 +21,26 @@ class EVEResearchMfgActivitiesAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'icon_filename', 'is_published')
 admin.site.register(EVEResearchMfgActivities, EVEResearchMfgActivitiesAdmin)
 
+class EVETypeActivityMaterialsAdmin(admin.ModelAdmin):
+    list_display = ('blueprint_type', 'activity', 'required_type', 'quantity')
+admin.site.register(EVETypeActivityMaterials, EVETypeActivityMaterialsAdmin)    
+ 
+class EVEUnitAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'display_name', 'description')
+admin.site.register(EVEUnit, EVEUnitAdmin)
+ 
+class EVEAttributeCategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description')
+admin.site.register(EVEAttributeCategory, EVEAttributeCategoryAdmin)
+ 
+class EVEAttributeTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'description')
+admin.site.register(EVEAttributeType, EVEAttributeTypeAdmin)
+ 
+class EVEInventoryTypeAttributesAdmin(admin.ModelAdmin):
+    list_display = ('inventory_type', 'attribute', 'value_int', 'value_float')
+admin.site.register(EVEInventoryTypeAttributes, EVEInventoryTypeAttributesAdmin)
+
 class EVEGraphicAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'name', 'icon_filename')
 admin.site.register(EVEGraphic, EVEGraphicAdmin)

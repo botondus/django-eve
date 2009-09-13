@@ -8,12 +8,12 @@ sys.path.insert(0, project_root)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 # Import the importer modules.
-from importers import chr, graphics, inventory, stations
+from importers import chr, graphics, inventory, stations, attributesandeffects
 
 print "Importing from the CCP dump..."
 
 # Carry out the imports in order.
-for mod in [graphics, chr, inventory, stations]:
+for mod in [graphics, chr, stations, inventory, attributesandeffects]:
     print "  - %s" % mod.__name__
     mod.do_import()
     

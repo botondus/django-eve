@@ -39,6 +39,6 @@ def do_import():
     conn.row_factory = sqlite3.Row
     
     do_import_ram_activities(conn)
-
+    
 if __name__ == "__main__":
     do_import()
