@@ -122,6 +122,25 @@ class EVEInventoryGroup(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEInventoryMetaGroup(models.Model):
+    """
+    Names of variants of items. 
+    """
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Meta Group'
+        verbose_name_plural = 'Inventory Meta Groups'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEInventoryType(models.Model):
     """
     Inventory types are generally objects that can be carried in your

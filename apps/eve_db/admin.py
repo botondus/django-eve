@@ -5,6 +5,10 @@ class EVEInventoryCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'is_published')
 admin.site.register(EVEInventoryCategory, EVEInventoryCategoryAdmin)
 
+class EVEInventoryMetaGroupAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description', 'graphic')
+admin.site.register(EVEInventoryMetaGroup, EVEInventoryMetaGroupAdmin)
+
 class EVEInventoryGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'description')
 admin.site.register(EVEInventoryGroup, EVEInventoryGroupAdmin)
