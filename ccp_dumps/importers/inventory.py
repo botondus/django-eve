@@ -167,6 +167,86 @@ def do_import_metatypes(conn):
         imp_obj.save()
     c.close()
     
+def do_import_effects(conn):
+    """
+    dgmEffects
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from dgmEffects'):
+        imp_obj, created = EVEInventoryEffect.objects.get_or_create(id=row['effectID'])
+        imp_obj.name = row['effectName']
+        imp_obj.category = row['effectCategory']
+        imp_obj.pre_expression = row['preExpression']
+        imp_obj.post_expression = row['postExpression']
+        imp_obj.description = row['description']
+        
+        if row['guid']:
+            imp_obj.guid = row['guid']
+        
+        if row['graphicID']:
+            imp_obj.graphic = EVEGraphic.objects.get(id=row['graphicID'])
+            
+        if row['isOffensive'] == 1:
+            imp_obj.is_offensive = True
+            
+        if row['isAssistance'] == 1:
+            imp_obj.is_assistance = True
+            
+        if row['durationAttributeID']:
+            imp_obj.duration_attribute = EVEInventoryAttributeType.objects.get(id=row['durationAttributeID'])
+            
+        if row['trackingSpeedAttributeID']:
+            imp_obj.tracking_speed_attribute = EVEInventoryAttributeType.objects.get(id=row['trackingSpeedAttributeID'])
+            
+        if row['dischargeAttributeID']:
+            imp_obj.discharge_attribute = EVEInventoryAttributeType.objects.get(id=row['dischargeAttributeID'])
+            
+        if row['rangeAttributeID']:
+            imp_obj.range_attribute = EVEInventoryAttributeType.objects.get(id=row['rangeAttributeID'])
+            
+        if row['falloffAttributeID']:
+            imp_obj.falloff_attribute = EVEInventoryAttributeType.objects.get(id=row['falloffAttributeID'])            
+            
+        if row['disallowAutoRepeat'] == 1:
+            imp_obj.disallow_autorepeat = True
+            
+        if row['published'] == 1:
+            imp_obj.is_published = True
+            
+        imp_obj.display_name = row['displayName']
+        
+        if row['isWarpSafe'] == 1:
+            imp_obj.is_warp_safe = True
+            
+        if row['rangeChance'] == 1:
+            imp_obj.has_range_chance = True
+            
+        if row['electronicChance'] == 1:
+            imp_obj.has_electronic_chance = True
+            
+        if row['propulsionChance'] == 1:
+            imp_obj.has_propulsion_chance = True
+            
+        imp_obj.distribution = row['distribution']
+        
+        if row['sfxName']:
+            imp_obj.sfx_name = row['sfxName']
+        
+        if row['npcUsageChanceAttributeID']:
+            imp_obj.npc_usage_chance_attribute = EVEInventoryAttributeType.objects.get(id=row['npcUsageChanceAttributeID'])
+    
+        if row['npcActivationChanceAttributeID']:
+            imp_obj.npc_activation_chance_attribute = EVEInventoryAttributeType.objects.get(id=row['npcActivationChanceAttributeID'])
+
+        if row['fittingUsageChanceAttributeID']:
+            imp_obj.fitting_usage_chance_attribute = EVEInventoryAttributeType.objects.get(id=row['fittingUsageChanceAttributeID'])
+
+        imp_obj.save()
+
+    # Clean up.
+    c.close()
+    
 def do_import_flags(conn):
     """
     invFlags
@@ -261,6 +341,7 @@ def do_import():
     do_import_meta_groups(conn)
     do_import_metatypes(conn)
     do_import_flags(conn)
+    do_import_effects(conn)
 
 if __name__ == "__main__":
     do_import()

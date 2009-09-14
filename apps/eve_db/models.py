@@ -346,6 +346,71 @@ class EVEInventoryBlueprintType(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEInventoryEffect(models.Model):
+    """
+    Name and descriptions of effects.
+    """
+    name = models.CharField(max_length=150)
+    # Not sure what this is. Internal category of effect.
+    category = models.IntegerField(blank=True, null=True)
+    # Unknown
+    pre_expression = models.IntegerField(blank=True, null=True)
+    # Unknown
+    post_expression = models.IntegerField(blank=True, null=True)
+    description = models.TextField(blank=True)
+    # Unknown
+    guid = models.CharField(max_length=255, blank=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    # If True, applied to enemy.
+    is_offensive = models.BooleanField(default=False)
+    # If True, applied to ally.
+    is_assistance = models.BooleanField(default=False)
+    duration_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                           blank=True, null=True,
+                                           related_name='eveinventoryeffectdurationeattribute')
+    tracking_speed_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                                 blank=True, null=True,
+                                                 related_name='eveinventoryeffecttrackingspeedattribute')
+    discharge_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                            blank=True, null=True,
+                                            related_name='eveinventoryeffectdischargeattribute')
+    range_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                        blank=True, null=True,
+                                        related_name='eveinventoryeffectrangeattribute')
+    falloff_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                          blank=True, null=True,
+                                          related_name='eveinventoryeffectfalloffattribute')
+    disallow_auto_repeat = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
+    # Name of effect as displayed in game.
+    display_name = models.CharField(max_length=255, blank=True)
+    is_warp_safe = models.BooleanField(default=False)
+    has_range_chance = models.BooleanField(default=False)
+    has_electronic_chance = models.BooleanField(default=False)
+    has_propulsion_chance = models.BooleanField(default=False)
+    distribution = models.IntegerField(blank=True, null=True)
+    sfx_name = models.CharField(max_length=100, blank=True)
+    npc_usage_chance_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                                   blank=True, null=True,
+                                                   related_name='eveinventoryeffectnpcusagechanceattribute')
+    npc_activation_chance_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                                        blank=True, null=True,
+                                                        related_name='eveinventoryeffectnpcactivationchanceattribute')
+    fitting_usage_chance_attribute = models.ForeignKey(EVEInventoryAttributeType, 
+                                                       blank=True, null=True,
+                                                       related_name='eveinventoryeffectfittingusagechanceattribute')
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Effect'
+        verbose_name_plural = 'Inventory Effects'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEResearchMfgActivities(models.Model):
     """
     Research and Manufacturing activities.

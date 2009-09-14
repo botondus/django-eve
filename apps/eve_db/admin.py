@@ -25,6 +25,11 @@ class EVEInventoryFlagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'text', 'type_text', 'order')
 admin.site.register(EVEInventoryFlag, EVEInventoryFlagAdmin)
 
+class EVEInventoryEffectAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'description', 'is_offensive',
+                    'is_assistance', 'is_published')
+admin.site.register(EVEInventoryEffect, EVEInventoryEffectAdmin)
+
 class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)
