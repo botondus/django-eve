@@ -34,7 +34,7 @@ class EVEName(models.Model):
     Things covered by this model include space objects, corporations, and
     people.
     """
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
     category = models.ForeignKey('EVEInventoryCategory', blank=True, null=True)
     group = models.ForeignKey('EVEInventoryGroup', blank=True, null=True)
     type = models.ForeignKey('EVEInventoryType', blank=True, null=True)
