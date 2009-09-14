@@ -9,6 +9,10 @@ class EVEInventoryMetaGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'graphic')
 admin.site.register(EVEInventoryMetaGroup, EVEInventoryMetaGroupAdmin)
 
+class EVEInventoryMetaTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'type', 'parent_type', 'meta_group')
+admin.site.register(EVEInventoryMetaType, EVEInventoryMetaTypeAdmin)
+
 class EVEInventoryGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'description')
 admin.site.register(EVEInventoryGroup, EVEInventoryGroupAdmin)
@@ -16,6 +20,10 @@ admin.site.register(EVEInventoryGroup, EVEInventoryGroupAdmin)
 class EVEInventoryTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'group', 'market_group', 'description')
 admin.site.register(EVEInventoryType, EVEInventoryTypeAdmin)
+
+class EVEInventoryFlagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'text', 'type_text', 'order')
+admin.site.register(EVEInventoryFlag, EVEInventoryFlagAdmin)
 
 class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')

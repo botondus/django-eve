@@ -167,6 +167,21 @@ def do_import_metatypes(conn):
         imp_obj.save()
     c.close()
     
+def do_import_flags(conn):
+    """
+    invFlags
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from invFlags'):        
+        imp_obj, created = EVEInventoryFlag.objects.get_or_create(id=row['flagID'])
+        imp_obj.name = row['flagName']
+        imp_obj.text = row['flagText']
+        imp_obj.type_text = row['flagType']
+        imp_obj.order = row['orderID']
+        imp_obj.save()
+    c.close()
+    
 def do_import_blueprint_types(conn):
     """
     Import blueprint types.
@@ -245,6 +260,7 @@ def do_import():
     do_import_eve_names(conn)
     do_import_meta_groups(conn)
     do_import_metatypes(conn)
+    do_import_flags(conn)
 
 if __name__ == "__main__":
     do_import()

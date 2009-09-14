@@ -174,6 +174,54 @@ class EVEInventoryType(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEInventoryMetaType(models.Model):
+    """
+    Relation between different variants of item (i.e. Tech-I, Faction, Tech-II). 
+    These are not "meta-levels" of items used for calculate invention success. 
+    For that information see Attribute metaLevel (attributeID=633) in table 
+    dgmTypeAttributes linked with type in question. 
+    """
+    type = models.ForeignKey(EVEInventoryType, related_name='eveinventorymetatype_type_set')
+    parent_type = models.ForeignKey(EVEInventoryType, related_name='eveinventorymetatype_parent_type_set')
+    meta_group = models.ForeignKey(EVEInventoryMetaGroup) 
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Meta Type'
+        verbose_name_plural = 'Inventory Meta Types'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVEInventoryFlag(models.Model):
+    """
+    The invFlags table is used to identify the location and/or status of an 
+    item within an office, station, ship, module or other container for the 
+    API calls APIv2 Char AssetList XML and APIv2 Corp AssetList XML. 
+    """
+    # Short name for the flag.
+    name = models.CharField(max_length=255)
+    # Full, descriptive name for the flag.
+    text = models.CharField(max_length=255, blank=True)
+    # Very inconsistently used.
+    type_text = models.CharField(max_length=255, blank=True)
+    # Have no idea what this is.
+    order = models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Flag'
+        verbose_name_plural = 'Inventory Flags'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEResearchMfgActivities(models.Model):
     """
     Research and Manufacturing activities.
