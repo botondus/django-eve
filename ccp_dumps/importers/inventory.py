@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 """
 Import inventory data.
-
-Tables imported:
-invCategories
-invGroups
 """
 import os
 import sqlite3
@@ -12,7 +8,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVEName, EVERace, EVEGraphic, EVEInventoryCategory, EVEInventoryGroup, EVEMarketGroup, EVEInventoryType, EVEInventoryBlueprintType, EVETypeActivityMaterials, EVEResearchMfgActivities, EVEInventoryMetaGroup
+from apps.eve_db.models import *
 
 def do_import_categories(conn):
     """
@@ -154,6 +150,23 @@ def do_import_invtypes(conn):
     # Clean up.
     c.close()
     
+def do_import_metatypes(conn):
+    """
+    invMetaTypes
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from invMetaTypes'):
+        type = EVEInventoryType.objects.get(id=row['typeID'])
+        parent_type = EVEInventoryType.objects.get(id=row['parentTypeID'])
+        meta_group = EVEInventoryMetaGroup.objects.get(id=row['metaGroupID'])
+        
+        imp_obj, created = EVEInventoryMetaType.objects.get_or_create(type=type,
+                                                                      parent_type=parent_type,
+                                                                      meta_group=meta_group)
+        imp_obj.save()
+    c.close()
+    
 def do_import_blueprint_types(conn):
     """
     Import blueprint types.
@@ -231,6 +244,7 @@ def do_import():
     do_import_activity_materials(conn)
     do_import_eve_names(conn)
     do_import_meta_groups(conn)
+    do_import_metatypes(conn)
 
 if __name__ == "__main__":
     do_import()
