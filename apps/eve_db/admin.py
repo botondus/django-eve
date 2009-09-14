@@ -41,13 +41,13 @@ class EVEUnitAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'display_name', 'description')
 admin.site.register(EVEUnit, EVEUnitAdmin)
  
-class EVEAttributeCategoryAdmin(admin.ModelAdmin):
+class EVEInventoryAttributeCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description')
-admin.site.register(EVEAttributeCategory, EVEAttributeCategoryAdmin)
+admin.site.register(EVEInventoryAttributeCategory, EVEInventoryAttributeCategoryAdmin)
  
-class EVEAttributeTypeAdmin(admin.ModelAdmin):
+class EVEInventoryAttributeTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'description')
-admin.site.register(EVEAttributeType, EVEAttributeTypeAdmin)
+admin.site.register(EVEInventoryAttributeType, EVEInventoryAttributeTypeAdmin)
  
 class EVEInventoryTypeAttributesAdmin(admin.ModelAdmin):
     list_display = ('inventory_type', 'attribute', 'value_int', 'value_float')

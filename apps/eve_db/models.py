@@ -319,7 +319,7 @@ class EVEUnit(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-class EVEAttributeCategory(models.Model):
+class EVEInventoryAttributeCategory(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=100, blank=True)
 
@@ -334,9 +334,9 @@ class EVEAttributeCategory(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-class EVEAttributeType(models.Model):
+class EVEInventoryAttributeType(models.Model):
     name = models.CharField(max_length=75)
-    category = models.ForeignKey(EVEAttributeCategory, blank=True, null=True)
+    category = models.ForeignKey(EVEInventoryAttributeCategory, blank=True, null=True)
     description = models.TextField(blank=True)
     graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
     defaultvalue = models.IntegerField(blank=True, null=True)
@@ -359,7 +359,7 @@ class EVEAttributeType(models.Model):
 
 class EVEInventoryTypeAttributes(models.Model):
     inventory_type = models.ForeignKey(EVEInventoryType)
-    attribute = models.ForeignKey(EVEAttributeType)
+    attribute = models.ForeignKey(EVEInventoryAttributeType)
     value_int = models.IntegerField(blank=True, null=True)
     value_float = models.FloatField(blank=True, null=True)
 

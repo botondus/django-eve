@@ -8,7 +8,7 @@ import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     constants.setup_environment()
-from apps.eve_db.models import EVEUnit, EVEAttributeCategory, EVEAttributeType, EVEInventoryTypeAttributes, EVEGraphic, EVEInventoryType
+from apps.eve_db.models import EVEUnit, EVEInventoryAttributeCategory, EVEInventoryAttributeType, EVEInventoryTypeAttributes, EVEGraphic, EVEInventoryType
 
 def do_import_eve_units(conn):
     """
@@ -35,7 +35,7 @@ def do_import_attribute_categories(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from dgmattributecategories'):
-        imp_obj, created = EVEAttributeCategory.objects.get_or_create(id=row['categoryid'])
+        imp_obj, created = EVEInventoryAttributeCategory.objects.get_or_create(id=row['categoryid'])
         imp_obj.name = row['categoryname']
         imp_obj.description = row['categorydescription']
 
@@ -52,7 +52,7 @@ def do_import_attribute_types(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from dgmattributetypes'):
-        imp_obj, created = EVEAttributeType.objects.get_or_create(id=row['attributeid'])
+        imp_obj, created = EVEInventoryAttributeType.objects.get_or_create(id=row['attributeid'])
         imp_obj.name = row['attributename']
         imp_obj.description = row['description']
         imp_obj.default_value = row['defaultvalue']
@@ -63,7 +63,7 @@ def do_import_attribute_types(conn):
 
         category_id = row['categoryid']
         if category_id:
-            imp_obj.category = EVEAttributeCategory.objects.get(id=category_id)
+            imp_obj.category = EVEInventoryAttributeCategory.objects.get(id=category_id)
 
         unit_id = row['unitid']
         if unit_id:
@@ -87,7 +87,7 @@ def do_import_inventory_type_attributes(conn):
 
     for row in c.execute('select * from dgmtypeattributes'):    
         inventory_type = EVEInventoryType.objects.get(id=row['typeid'])
-        attribute = EVEAttributeType.objects.get(id=row['attributeid'])
+        attribute = EVEInventoryAttributeType.objects.get(id=row['attributeid'])
         imp_obj, created = EVEInventoryTypeAttributes.objects.get_or_create(inventory_type=inventory_type,
                                                                             attribute=attribute)
 
