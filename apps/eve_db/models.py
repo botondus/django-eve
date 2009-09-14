@@ -50,6 +50,42 @@ class EVEName(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class EVEUnit(models.Model):
+    name = models.CharField(max_length=75)
+    display_name = models.CharField(max_length=30, blank=True)
+    description = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Unit'
+        verbose_name_plural = 'Units'
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.__unicode__()
+
+class EVERace(models.Model):
+    """
+    An EVE race.
+    """
+    name = models.CharField(max_length=30)
+    short_description = models.TextField(blank=True)
+    description = models.TextField(blank=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Race'
+        verbose_name_plural = 'Races'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+    
 class EVEMarketGroup(models.Model):
     """
     Market groups are used to group items together in the market browser.
@@ -222,50 +258,57 @@ class EVEInventoryFlag(models.Model):
     def __str__(self):
         return self.__unicode__()
     
-class EVEResearchMfgActivities(models.Model):
-    """
-    Research and Manufacturing activities.
-    """
-    name = models.CharField(max_length=75, blank=True)
+class EVEInventoryAttributeCategory(models.Model):
+    name = models.CharField(max_length=30)
     description = models.CharField(max_length=100, blank=True)
-    # Name of the file, should be two numbers separated by underscore, no extension.
-    icon_filename = models.CharField(max_length=50, blank=True)
-    is_published = models.BooleanField(default=True)
-    
+
     class Meta:
         ordering = ['id']
-        verbose_name = 'Research and Mfg activity'
-        verbose_name_plural = 'Research and Mfg activities'
-        
+        verbose_name = 'Inventory Attribute Category'
+        verbose_name_plural = 'Inventory Attribute Categories'
+
     def __unicode__(self):
         return self.name
-    
+
     def __str__(self):
         return self.__unicode__()
 
-class EVETypeActivityMaterials(models.Model):
-    """
-    Stores materials and skills required for Blueprints and Artifacts
-    """
-    blueprint_type = models.ForeignKey(EVEInventoryType, blank=False,
-                                       null=False,
-                                       related_name='blueprint_materials_set')
-    activity = models.ForeignKey(EVEResearchMfgActivities, blank=False,
-                                 null=False,
-                                 related_name='activity_materials_set')
-    required_type = models.ForeignKey(EVEInventoryType, blank=False,
-                                      null=False,
-                                      related_name='required_materials_set')
-    quantity = models.IntegerField(blank=True, null=True)
-    damage_per_job = models.FloatField(blank=True, null=True)
+class EVEInventoryAttributeType(models.Model):
+    name = models.CharField(max_length=75)
+    category = models.ForeignKey(EVEInventoryAttributeCategory, blank=True, null=True)
+    description = models.TextField(blank=True)
+    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    defaultvalue = models.IntegerField(blank=True, null=True)
+    is_published = models.BooleanField(default=False)
+    display_name = models.CharField(max_length=100, blank=True)
+    unit = models.ForeignKey(EVEUnit, blank=True, null=True)
+    is_stackable = models.BooleanField(default=False)
+    high_is_good = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'Activity Material'
-        verbose_name_plural = 'Activity Materials'
+        verbose_name = 'Inventory Attribute Type'
+        verbose_name_plural = 'Inventory Attribute Types'
 
     def __unicode__(self):
-        return self.blueprint_type.name
+        return self.name
+
+    def __str__(self):
+        return self.__unicode__()
+
+class EVEInventoryTypeAttributes(models.Model):
+    inventory_type = models.ForeignKey(EVEInventoryType)
+    attribute = models.ForeignKey(EVEInventoryAttributeType)
+    value_int = models.IntegerField(blank=True, null=True)
+    value_float = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Type Attribute'
+        verbose_name_plural = 'Inventory Type Attributes'
+
+    def __unicode__(self):
+        return self.inventory_type.name + ' - ' + self.attribute.name
 
     def __str__(self):
         return self.__unicode__()
@@ -294,103 +337,60 @@ class EVEInventoryBlueprintType(models.Model):
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'Blueprint Type'
-        verbose_name_plural = 'Blueprint Types'
+        verbose_name = 'Inventory Blueprint Type'
+        verbose_name_plural = 'Inventory Blueprint Types'
         
     def __unicode__(self):
         return "BP: %s" % self.product_type
     
     def __str__(self):
         return self.__unicode__()
-
-class EVEUnit(models.Model):
-    name = models.CharField(max_length=75)
-    display_name = models.CharField(max_length=30, blank=True)
-    description = models.CharField(max_length=100, blank=True)
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Unit'
-        verbose_name_plural = 'Units'
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.__unicode__()
-
-class EVEInventoryAttributeCategory(models.Model):
-    name = models.CharField(max_length=30)
-    description = models.CharField(max_length=100, blank=True)
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Attribute Category'
-        verbose_name_plural = 'Attribute Categories'
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.__unicode__()
-
-class EVEInventoryAttributeType(models.Model):
-    name = models.CharField(max_length=75)
-    category = models.ForeignKey(EVEInventoryAttributeCategory, blank=True, null=True)
-    description = models.TextField(blank=True)
-    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
-    defaultvalue = models.IntegerField(blank=True, null=True)
-    is_published = models.BooleanField(default=False)
-    display_name = models.CharField(max_length=100, blank=True)
-    unit = models.ForeignKey(EVEUnit, blank=True, null=True)
-    is_stackable = models.BooleanField(default=False)
-    high_is_good = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Attribute Type'
-        verbose_name_plural = 'Attribute Types'
-
-    def __unicode__(self):
-        return self.name
-
-    def __str__(self):
-        return self.__unicode__()
-
-class EVEInventoryTypeAttributes(models.Model):
-    inventory_type = models.ForeignKey(EVEInventoryType)
-    attribute = models.ForeignKey(EVEInventoryAttributeType)
-    value_int = models.IntegerField(blank=True, null=True)
-    value_float = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Type Attribute'
-        verbose_name_plural = 'Type Attributes'
-
-    def __unicode__(self):
-        return self.inventory_type.name + ' - ' + self.attribute.name
-
-    def __str__(self):
-        return self.__unicode__()
-
-class EVERace(models.Model):
+    
+class EVEResearchMfgActivities(models.Model):
     """
-    An EVE race.
+    Research and Manufacturing activities.
     """
-    name = models.CharField(max_length=30)
-    short_description = models.TextField(blank=True)
-    description = models.TextField(blank=True)
-    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
+    name = models.CharField(max_length=75, blank=True)
+    description = models.CharField(max_length=100, blank=True)
+    # Name of the file, should be two numbers separated by underscore, no extension.
+    icon_filename = models.CharField(max_length=50, blank=True)
+    is_published = models.BooleanField(default=True)
     
     class Meta:
         ordering = ['id']
-        verbose_name = 'Race'
-        verbose_name_plural = 'Races'
+        verbose_name = 'Research and Mfg activity'
+        verbose_name_plural = 'Research and Mfg activities'
         
     def __unicode__(self):
         return self.name
     
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVETypeActivityMaterials(models.Model):
+    """
+    Stores materials and skills required for Blueprints and Artifacts
+    """
+    blueprint_type = models.ForeignKey(EVEInventoryType, blank=False,
+                                       null=False,
+                                       related_name='blueprint_materials_set')
+    activity = models.ForeignKey(EVEResearchMfgActivities, blank=False,
+                                 null=False,
+                                 related_name='activity_materials_set')
+    required_type = models.ForeignKey(EVEInventoryType, blank=False,
+                                      null=False,
+                                      related_name='required_materials_set')
+    quantity = models.IntegerField(blank=True, null=True)
+    damage_per_job = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Activity Material'
+        verbose_name_plural = 'Activity Materials'
+
+    def __unicode__(self):
+        return self.blueprint_type.name
+
     def __str__(self):
         return self.__unicode__()
 
@@ -433,6 +433,8 @@ class EVEPlayerAlliance(models.Model):
     
     class Meta:
         ordering = ['date_founded']
+        verbose_name = 'Player Alliance'
+        verbose_name_plural = 'Player Alliances'
     
     def __unicode__(self):
         if self.name:
@@ -470,6 +472,10 @@ class EVEPlayerCorporation(models.Model):
     logo_color3 = models.IntegerField(blank=True, null=True)
     
     objects = EVEPlayerCorporationManager()
+    
+    class Meta:
+        verbose_name = 'Player Corporation'
+        verbose_name_plural = 'Player Corporations'
 
     def __str__(self):
         if self.name:
