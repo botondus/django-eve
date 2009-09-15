@@ -452,6 +452,31 @@ class EVEPOSResourcePurpose(models.Model):
     
     def __str__(self):
         return self.__unicode__()
+
+"""
+class EVEPOSResource(models.Model):
+    Fuel needed to support POSes. 
+    
+    invControlTowerResources
+
+    control_tower_type = models.ForeignKey(EVEInventoryType)
+    resource_type = models.ForeignKey(EVEInventoryType, blank=True, null=True)
+    purpose = models.ForeignKey(EVEPosResourcePurpose, blank=True, null=True)
+    quantity = models.IntegerField(blank=True, null=True)
+    min_security_level = models.IntegerField(blank=True, null=True)
+    faction = models.ForeignKey(EVEFaction, blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'POS Resource'
+        verbose_name_plural = 'POS Resources'
+        
+    def __unicode__(self):
+        return self.resource_type
+    
+    def __str__(self):
+        return self.__unicode__()
+"""
     
 class EVEInventoryTypeReactions(models.Model):
     """
