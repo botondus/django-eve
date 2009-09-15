@@ -429,7 +429,26 @@ class EVEInventoryTypeEffect(models.Model):
         verbose_name_plural = 'Inventory Type Effect'
         
     def __unicode__(self):
-        return self.name
+        return self.type
+    
+    def __str__(self):
+        return self.__unicode__()
+    
+class EVEPOSResourcePurpose(models.Model):
+    """
+    Types of tasks for which POS need resources, i.e. Online, Reinforced. 
+    
+    invControlTowerResourcePurposes
+    """
+    purpose = models.CharField(max_length=75, blank=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory POS Resource Purpose'
+        verbose_name_plural = 'Inventory POS Resource Purposes'
+        
+    def __unicode__(self):
+        return self.purpose
     
     def __str__(self):
         return self.__unicode__()

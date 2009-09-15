@@ -38,6 +38,10 @@ class EVEInventoryTypeReactionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'reaction_type', 'type', 'input')
 admin.site.register(EVEInventoryTypeReactions, EVEInventoryTypeReactionsAdmin)
 
+class EVEPOSResourcePurposeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'purpose')
+admin.site.register(EVEPOSResourcePurpose, EVEPOSResourcePurposeAdmin)
+
 class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)

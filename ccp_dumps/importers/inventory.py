@@ -306,6 +306,18 @@ def do_import_blueprint_types(conn):
 
     # Clean up.
     c.close()
+    
+def do_import_pos_fuel_purposes(conn):
+    """
+    invControlTowerResourcePurposes
+    """
+    c = conn.cursor()
+
+    for row in c.execute('select * from invControlTowerResourcePurposes'):
+        imp_obj, created = EVEPOSResourcePurpose.objects.get_or_create(id=row['purpose'])
+        imp_obj.purpose = row['purposeText']
+        imp_obj.save()
+    c.close()
 
 def do_import_activity_materials(conn):
     """
@@ -379,6 +391,7 @@ def do_import():
     do_import_effects(conn)
     do_import_type_effects(conn)
     do_import_type_reactions(conn)
+    do_import_pos_fuel_purposes(conn)
 
 if __name__ == "__main__":
     do_import()
