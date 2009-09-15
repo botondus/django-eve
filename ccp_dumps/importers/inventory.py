@@ -247,6 +247,22 @@ def do_import_effects(conn):
     # Clean up.
     c.close()
     
+def do_import_type_effects(conn):
+    """
+    dgmTypeEffects
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from dgmTypeEffects'):
+        type = EVEInventoryType.objects.get(id=row['typeID'])
+        effect = EVEInventoryEffect.objects.get(id=row['effectID'])        
+        imp_obj, created = EVEInventoryTypeEffect.objects.get_or_create(
+                                                                type=type,
+                                                                effect=effect)
+        imp_obj.is_default = row['isDefault']
+        imp_obj.save()
+    c.close()
+    
 def do_import_flags(conn):
     """
     invFlags
@@ -342,6 +358,7 @@ def do_import():
     do_import_metatypes(conn)
     do_import_flags(conn)
     do_import_effects(conn)
+    do_import_type_effects(conn)
 
 if __name__ == "__main__":
     do_import()

@@ -410,7 +410,30 @@ class EVEInventoryEffect(models.Model):
     
     def __str__(self):
         return self.__unicode__()
+
+class EVEInventoryTypeEffect(models.Model):
+    """
+    Effects related to items. Effects are like boolean flags - if an item has
+    an effect listed, it's subject to this effect with the specified
+    parameters, listed as per the EveInventoryEffect.
     
+    dgmTypeEffects
+    """
+    type = models.ForeignKey(EVEInventoryType)
+    effect = models.ForeignKey(EVEInventoryEffect)
+    is_default = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Type Effect'
+        verbose_name_plural = 'Inventory Type Effect'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
+
 class EVEResearchMfgActivities(models.Model):
     """
     Research and Manufacturing activities.
