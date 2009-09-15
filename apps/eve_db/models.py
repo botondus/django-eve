@@ -433,6 +433,34 @@ class EVEInventoryTypeEffect(models.Model):
     
     def __str__(self):
         return self.__unicode__()
+    
+class EVEInventoryTypeReactions(models.Model):
+    """
+    Reaction recipes for POSes.
+    
+    invTypeReactions
+    """
+    INPUT_TYPES = ((0, 'Result of reaction'), 
+                   (1, 'Reaction material'))
+    
+    reaction_type = models.ForeignKey(EVEInventoryType,
+                    related_name='eveinventorytypereactions_reaction_type_set')
+    input = models.IntegerField(choices=INPUT_TYPES, blank=True, null=True)
+    type = models.ForeignKey(EVEInventoryType,
+                    related_name='eveinventorytypereactions_type_set', 
+                    help_text="Reaction result or material.")
+    quantity = models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Inventory Type Reaction'
+        verbose_name_plural = 'Inventory Type Reactions'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
 
 class EVEResearchMfgActivities(models.Model):
     """

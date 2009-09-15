@@ -34,6 +34,10 @@ class EVEInventoryTypeEffectAdmin(admin.ModelAdmin):
     list_display = ('id', 'type', 'effect', 'is_default')
 admin.site.register(EVEInventoryTypeEffect, EVEInventoryTypeEffectAdmin)
 
+class EVEInventoryTypeReactionsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'reaction_type', 'type', 'input')
+admin.site.register(EVEInventoryTypeReactions, EVEInventoryTypeReactionsAdmin)
+
 class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)

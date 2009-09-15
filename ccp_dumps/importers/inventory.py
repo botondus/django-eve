@@ -329,6 +329,25 @@ def do_import_activity_materials(conn):
     # Clean up.
     c.close()
     
+def do_import_type_reactions(conn):
+    """
+    Import POS reactions.
+    
+    invTypeReactions
+    """
+    c = conn.cursor()
+
+    for row in c.execute('select * from invTypeReactions'):
+        reaction_type = EVEInventoryType.objects.get(id=row['reactionTypeID'])
+        type = EVEInventoryType.objects.get(id=row['typeID'])
+        imp_obj, created = EVEInventoryTypeReactions.objects.get_or_create(reaction_type=reaction_type,
+                                                                           type=type)
+        imp_obj.input = row['input']
+        imp_obj.quantity = row['quantity']
+        
+        imp_obj.save()
+    c.close()
+    
 def do_import_eve_names(conn):
     """
     Import eveNames table.
@@ -359,6 +378,7 @@ def do_import():
     do_import_flags(conn)
     do_import_effects(conn)
     do_import_type_effects(conn)
+    do_import_type_reactions(conn)
 
 if __name__ == "__main__":
     do_import()
