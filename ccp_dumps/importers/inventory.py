@@ -366,7 +366,7 @@ def do_import_eve_names(conn):
     """
     c = conn.cursor()
     for row in c.execute('select * from eveNames'):
-        imp_obj, created = EVEName.objects.get_or_create(id=row['itemID'])
+        imp_obj, created = EVEInventoryName.objects.get_or_create(id=row['itemID'])
         imp_obj.name = row['itemName']
         imp_obj.category = EVEInventoryCategory.objects.get(id=row['categoryID'])
         imp_obj.group = EVEInventoryGroup.objects.get(id=row['groupID'])

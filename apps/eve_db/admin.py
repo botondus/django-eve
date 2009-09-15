@@ -1,3 +1,6 @@
+"""
+Admin interface models. Automatically detected by admin.autodiscover().
+"""
 from django.contrib import admin
 from apps.eve_db.models import *
 
@@ -74,9 +77,9 @@ class EVEGraphicAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'name', 'icon_filename')
 admin.site.register(EVEGraphic, EVEGraphicAdmin)
 
-class EVENameAdmin(admin.ModelAdmin):
+class EVEInventoryNameAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'group', 'type')
-admin.site.register(EVEName, EVENameAdmin)
+admin.site.register(EVEInventoryName, EVEInventoryNameAdmin)
 
 class EVERaceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'short_description')
