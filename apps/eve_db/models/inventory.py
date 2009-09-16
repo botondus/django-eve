@@ -154,7 +154,10 @@ class EVEInventoryType(models.Model):
         verbose_name_plural = 'Inventory Types'
         
     def __unicode__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            return "Inventory Type #%d" % self.id
     
     def __str__(self):
         return self.__unicode__()
@@ -402,8 +405,8 @@ class EVEPOSResourcePurpose(models.Model):
     class Meta:
         app_label = 'eve_db'
         ordering = ['id']
-        verbose_name = 'Inventory POS Resource Purpose'
-        verbose_name_plural = 'Inventory POS Resource Purposes'
+        verbose_name = 'POS Resource Purpose'
+        verbose_name_plural = 'POS Resource Purposes'
         
     def __unicode__(self):
         return self.purpose
@@ -411,30 +414,32 @@ class EVEPOSResourcePurpose(models.Model):
     def __str__(self):
         return self.__unicode__()
 
-"""
 class EVEPOSResource(models.Model):
+    """
     Fuel needed to support POSes. 
     
     invControlTowerResources
-
-    control_tower_type = models.ForeignKey(EVEInventoryType)
-    resource_type = models.ForeignKey(EVEInventoryType, blank=True, null=True)
-    purpose = models.ForeignKey(EVEPosResourcePurpose, blank=True, null=True)
+    """
+    control_tower_type = models.ForeignKey(EVEInventoryType,
+                                           related_name='tower_resource_set')
+    resource_type = models.ForeignKey(EVEInventoryType,
+                                      related_name='pos_resource_set')
+    purpose = models.ForeignKey(EVEPOSResourcePurpose, blank=True, null=True)
     quantity = models.IntegerField(blank=True, null=True)
     min_security_level = models.IntegerField(blank=True, null=True)
-    faction = models.ForeignKey(EVEFaction, blank=True, null=True)
+    faction = models.ForeignKey('Faction', blank=True, null=True)
     
     class Meta:
+        app_label = 'eve_db'
         ordering = ['id']
         verbose_name = 'POS Resource'
         verbose_name_plural = 'POS Resources'
         
     def __unicode__(self):
-        return self.resource_type
+        return "POS Resource #%d" % self.id
     
     def __str__(self):
         return self.__unicode__()
-"""
     
 class EVEInventoryTypeReactions(models.Model):
     """

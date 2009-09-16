@@ -45,6 +45,11 @@ class EVEPOSResourcePurposeAdmin(admin.ModelAdmin):
     list_display = ('id', 'purpose')
 admin.site.register(EVEPOSResourcePurpose, EVEPOSResourcePurposeAdmin)
 
+class EVEPOSResourceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'control_tower_type', 'resource_type', 'purpose',
+                    'quantity', 'faction')
+admin.site.register(EVEPOSResource, EVEPOSResourceAdmin)
+
 class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)

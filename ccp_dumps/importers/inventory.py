@@ -318,6 +318,25 @@ def do_import_pos_fuel_purposes(conn):
         imp_obj.purpose = row['purposeText']
         imp_obj.save()
     c.close()
+    
+def do_import_pos_fuel(conn):
+    """
+    invControlTowerResources
+    """
+    c = conn.cursor()
+
+    for row in c.execute('select * from invControlTowerResources'):
+        control_tower_type = EVEInventoryType.objects.get(id=row['controlTowerTypeID'])
+        resource_type = EVEInventoryType.objects.get(id=row['resourceTypeID'])
+        imp_obj, created = EVEPOSResource.objects.get_or_create(control_tower_type=control_tower_type,
+                                                                resource_type=resource_type)
+        imp_obj.control_tower_type = control_tower_type
+        imp_obj.resource_type = resource_type
+        imp_obj.purpose = EVEPOSResourcePurpose.objects.get(id=row['purpose'])
+        imp_obj.quantity = row['quantity']
+        imp_obj.min_security_level = row['minSecurityLevel']
+        imp_obj.save()
+    c.close()
 
 def do_import_activity_materials(conn):
     """
@@ -392,6 +411,7 @@ def do_import():
     do_import_type_effects(conn)
     do_import_type_reactions(conn)
     do_import_pos_fuel_purposes(conn)
+    do_import_pos_fuel(conn)
 
 if __name__ == "__main__":
     do_import()
