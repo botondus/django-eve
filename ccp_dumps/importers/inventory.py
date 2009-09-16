@@ -379,6 +379,25 @@ def do_import_type_reactions(conn):
         imp_obj.save()
     c.close()
     
+def do_import_contraband(conn):
+    """
+    invContrabandTypes
+    """
+    c = conn.cursor()
+
+    for row in c.execute('select * from invContrabandTypes'):
+        faction = Faction.objects.get(id=row['factionID'])
+        type = EVEInventoryType.objects.get(id=row['typeID'])
+        imp_obj, created = ContrabandType.objects.get_or_create(faction=faction,
+                                                                type=type)
+        imp_obj.standing_loss = row['standingLoss']
+        imp_obj.confiscate_min_sec = row['confiscateMinSec']
+        imp_obj.fine_by_value = row['fineByValue']
+        imp_obj.attack_min_sec = row['attackMinSec']
+        
+        imp_obj.save()
+    c.close()
+    
 def do_import_eve_names(conn):
     """
     Import eveNames table.
@@ -412,6 +431,7 @@ def do_import():
     do_import_type_reactions(conn)
     do_import_pos_fuel_purposes(conn)
     do_import_pos_fuel(conn)
+    do_import_contraband(conn)
 
 if __name__ == "__main__":
     do_import()

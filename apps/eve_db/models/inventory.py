@@ -515,7 +515,30 @@ class EVETypeActivityMaterials(models.Model):
         verbose_name_plural = 'Activity Materials'
 
     def __unicode__(self):
-        return self.blueprint_type.name
+        return self.blueprint_type
+
+    def __str__(self):
+        return self.__unicode__()
+    
+class ContrabandType(models.Model):
+    """
+    Points to an InventoryType that is considered contraband somewhere.
+    """
+    faction = models.ForeignKey('Faction')
+    type = models.ForeignKey(EVEInventoryType)
+    standing_loss = models.FloatField(blank=True, null=True)
+    confiscate_min_sec = models.FloatField(blank=True, null=True)
+    fine_by_value = models.FloatField(blank=True, null=True)
+    attack_min_sec = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        app_label = 'eve_db'
+        ordering = ['id']
+        verbose_name = 'Contraband'
+        verbose_name_plural = 'Contraband'
+
+    def __unicode__(self):
+        return self.type
 
     def __str__(self):
         return self.__unicode__()
