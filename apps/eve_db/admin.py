@@ -60,6 +60,23 @@ admin.site.register(EVETypeActivityMaterials, EVETypeActivityMaterialsAdmin)
 class EVEUnitAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'display_name', 'description')
 admin.site.register(EVEUnit, EVEUnitAdmin)
+
+class UniverseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+admin.site.register(Universe, UniverseAdmin)
+
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'faction')
+admin.site.register(Region, RegionAdmin)
+
+class ConstellationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'faction', 'alliance')
+admin.site.register(Constellation, ConstellationAdmin)
+
+class SolarSystemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'constellation', 'region', 'faction', 
+                    'alliance', 'security_class', 'security_level')
+admin.site.register(SolarSystem, SolarSystemAdmin)
  
 class EVEInventoryAttributeCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description')
@@ -84,6 +101,15 @@ admin.site.register(EVEInventoryName, EVEInventoryNameAdmin)
 class EVERaceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'short_description')
 admin.site.register(EVERace, EVERaceAdmin)
+
+class CorporateActivityAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description')
+admin.site.register(CorporateActivity, CorporateActivityAdmin)
+
+class NPCCorporationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'faction', 'description', 'station_count', 
+                    'size', 'extent')
+admin.site.register(NPCCorporation, NPCCorporationAdmin)
 
 class EVEPlayerCorporationInline(admin.TabularInline):
     model = EVEPlayerCorporation

@@ -47,24 +47,3 @@ class EVEGraphic(models.Model):
     
     def __str__(self):
         return self.__unicode__()
-    
-class EVERace(models.Model):
-    """
-    An EVE race.
-    """
-    name = models.CharField(max_length=30)
-    short_description = models.TextField(blank=True)
-    description = models.TextField(blank=True)
-    graphic = models.ForeignKey(EVEGraphic, blank=True, null=True)
-    
-    class Meta:
-        app_label = 'eve_db'
-        ordering = ['id']
-        verbose_name = 'Race'
-        verbose_name_plural = 'Races'
-        
-    def __unicode__(self):
-        return self.name
-    
-    def __str__(self):
-        return self.__unicode__()

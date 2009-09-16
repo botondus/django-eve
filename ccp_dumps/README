@@ -11,4 +11,7 @@ You do -NOT- want the eam version. It is stripped down a lot and is missing
 all kinds of information that we use.
 
 Download and extract the DB file and place it in your ccp_dumps directory
-without changing the name. You are then ready to run the importers.
+without changing the name. You are then ready to run the importers. This is
+generally done by running run_importers.py as such:
+
+    python run_importers.py
