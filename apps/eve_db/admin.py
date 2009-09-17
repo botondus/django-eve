@@ -67,9 +67,9 @@ class EVEInventoryBlueprintTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'blueprint_type', 'product_type', 'tech_level')
 admin.site.register(EVEInventoryBlueprintType, EVEInventoryBlueprintTypeAdmin)
 
-class EVEResearchMfgActivitiesAdmin(admin.ModelAdmin):
+class ResearchAndMfgActivityAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'icon_filename', 'is_published')
-admin.site.register(EVEResearchMfgActivities, EVEResearchMfgActivitiesAdmin)
+admin.site.register(ResearchAndMfgActivity, ResearchAndMfgActivityAdmin)
 
 class EVETypeActivityMaterialsAdmin(admin.ModelAdmin):
     list_display = ('blueprint_type', 'activity', 'required_type', 'quantity')
@@ -136,6 +136,10 @@ admin.site.register(NPCCorporation, NPCCorporationAdmin)
 class NPCCorporationDivisionAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'leader_type')
 admin.site.register(NPCCorporationDivision, NPCCorporationDivisionAdmin)
+
+class StationServiceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description')
+admin.site.register(StationService, StationServiceAdmin)
 
 class EVEPlayerCorporationInline(admin.TabularInline):
     model = EVEPlayerCorporation

@@ -346,7 +346,7 @@ def do_import_activity_materials(conn):
 
     for row in c.execute('select * from typeActivityMaterials'):
         blueprint_type = EVEInventoryType.objects.get(id=row['typeID'])
-        activity = EVEResearchMfgActivities.objects.get(id=row['activityID'])
+        activity = ResearchAndMfgActivity.objects.get(id=row['activityID'])
         required_type = EVEInventoryType.objects.get(id=row['requiredTypeID'])
         actmaterial, created = EVETypeActivityMaterials.objects.get_or_create(blueprint_type=blueprint_type,
                                                                               activity=activity,
