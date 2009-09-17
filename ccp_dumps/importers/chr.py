@@ -76,6 +76,25 @@ def do_import_bloodlines(conn):
             imp_obj.graphic = EVEGraphic.objects.get(id=row['graphicID'])
         imp_obj.save()
     c.close()
+    
+def do_import_ancestries(conn):
+    c = conn.cursor()
+    
+    for row in c.execute('select * from chrAncestries'):
+        imp_obj, created = Ancestry.objects.get_or_create(id=row['ancestryID'])
+        imp_obj.name = row['ancestryName']
+        imp_obj.bloodline = Bloodline.objects.get(id=row['bloodlineID'])
+        imp_obj.description = row['description']
+        imp_obj.perception_bonus = row['perception']
+        imp_obj.willpower_bonus = row['willpower']
+        imp_obj.charisma_bonus = row['charisma']
+        imp_obj.memory_bonus = row['memory']
+        imp_obj.intelligence_bonus = row['intelligence']
+        imp_obj.short_description = row['shortDescription']
+        if row['graphicID']:
+            imp_obj.graphic = EVEGraphic.objects.get(id=row['graphicID'])
+        imp_obj.save()
+    c.close()
 
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
@@ -84,6 +103,7 @@ def do_import():
     do_import_races(conn)
     do_import_factions(conn)
     do_import_bloodlines(conn)
+    do_import_ancestries(conn)
 
 if __name__ == "__main__":
     do_import()

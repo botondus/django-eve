@@ -12,6 +12,10 @@ class BloodlineAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'race', 'corporation')
 admin.site.register(Bloodline, BloodlineAdmin)
 
+class AncestryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'bloodline', 'short_description')
+admin.site.register(Ancestry, AncestryAdmin)
+
 class EVEInventoryMetaGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'graphic')
 admin.site.register(EVEInventoryMetaGroup, EVEInventoryMetaGroupAdmin)

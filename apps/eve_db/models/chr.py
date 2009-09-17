@@ -62,6 +62,33 @@ class Bloodline(models.Model):
     
     def __str__(self):
         return self.__unicode__()
+    
+class Ancestry(models.Model):
+    """
+    chrAncestries
+    """
+    name = models.CharField(max_length=255, blank=True)
+    bloodline = models.ForeignKey(Bloodline,blank=True, null=True)
+    description = models.TextField(blank=True)
+    perception_bonus = models.IntegerField(default=0)
+    willpower_bonus = models.IntegerField(default=0)
+    charisma_bonus = models.IntegerField(default=0)
+    memory_bonus = models.IntegerField(default=0)
+    intelligence_bonus = models.IntegerField(default=0)
+    graphic = models.ForeignKey('EVEGraphic', blank=True, null=True)
+    short_description = models.TextField(blank=True)
+    
+    class Meta:
+        app_label = 'eve_db'
+        ordering = ['id']
+        verbose_name = 'Ancestry'
+        verbose_name_plural = 'Ancestries'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()
 
 class Faction(models.Model):
     """
