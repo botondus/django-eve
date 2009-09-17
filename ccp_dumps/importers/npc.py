@@ -88,6 +88,20 @@ def do_import_npc_corps(conn):
         imp_obj.description = row['description']
         imp_obj.save()
     c.close()
+    
+def do_import_npc_divisions(conn):
+    """
+    crpActivities
+    """
+    c = conn.cursor()
+    
+    for row in c.execute('select * from crpNPCDivisions'):
+        imp_obj, created = NPCCorporationDivision.objects.get_or_create(id=row['divisionID'])
+        imp_obj.name = row['divisionName']
+        imp_obj.description = row['description']
+        imp_obj.leader_type = row['leaderType']
+        imp_obj.save()
+    c.close()
 
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
@@ -95,6 +109,7 @@ def do_import():
     
     do_import_activities(conn)
     do_import_npc_corps(conn)
+    do_import_npc_divisions(conn)
 
 if __name__ == "__main__":
     do_import()

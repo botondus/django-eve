@@ -90,3 +90,25 @@ class NPCCorporation(models.Model):
     
     def __str__(self):
         return self.__unicode__()
+
+class NPCCorporationDivision(models.Model):
+    """
+    Used for NPC agents.
+    
+    crpNPCDivisions
+    """
+    name = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    leader_type = models.CharField(max_length=100, blank=True)
+    
+    class Meta:
+        app_label = 'eve_db'
+        ordering = ['id']
+        verbose_name = 'NPC Corporation Division'
+        verbose_name_plural = 'NPC Corporation Division'
+        
+    def __unicode__(self):
+        return self.name
+    
+    def __str__(self):
+        return self.__unicode__()

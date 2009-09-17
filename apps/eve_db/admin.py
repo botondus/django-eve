@@ -133,6 +133,10 @@ class NPCCorporationAdmin(admin.ModelAdmin):
                     'size', 'extent')
 admin.site.register(NPCCorporation, NPCCorporationAdmin)
 
+class NPCCorporationDivisionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'description', 'leader_type')
+admin.site.register(NPCCorporationDivision, NPCCorporationDivisionAdmin)
+
 class EVEPlayerCorporationInline(admin.TabularInline):
     model = EVEPlayerCorporation
     fields = ('name', 'ticker')
