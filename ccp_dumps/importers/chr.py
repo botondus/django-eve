@@ -51,6 +51,31 @@ def do_import_factions(conn):
 
         imp_obj.save()
     c.close()
+    
+def do_import_bloodlines(conn):
+    c = conn.cursor()
+    
+    for row in c.execute('select * from chrBloodlines'):
+        imp_obj, created = Bloodline.objects.get_or_create(id=row['bloodlineID'])
+        imp_obj.name = row['bloodlineName']
+        imp_obj.race = EVERace.objects.get(id=row['raceID'])
+        imp_obj.description = row['description']
+        imp_obj.male_description = row['maleDescription']
+        imp_obj.female_description = row['femaleDescription']
+        starter_ship, ship_created = EVEInventoryType.objects.get_or_create(id=row['shipTypeID'])
+        imp_obj.starter_ship_type = starter_ship
+        imp_obj.starting_perception = row['perception']
+        imp_obj.starting_willpower = row['willpower']
+        imp_obj.starting_charisma = row['charisma']
+        imp_obj.starting_memory = row['memory']
+        imp_obj.starting_intelligence = row['intelligence']
+        imp_obj.short_description = row['shortDescription']
+        imp_obj.short_male_description = row['shortMaleDescription']
+        imp_obj.short_female_description = row['shortFemaleDescription']
+        if row['graphicID']:
+            imp_obj.graphic = EVEGraphic.objects.get(id=row['graphicID'])
+        imp_obj.save()
+    c.close()
 
 def do_import():
     conn = sqlite3.connect(constants.DB_FILE)
@@ -58,6 +83,7 @@ def do_import():
     
     do_import_races(conn)
     do_import_factions(conn)
+    do_import_bloodlines(conn)
 
 if __name__ == "__main__":
     do_import()

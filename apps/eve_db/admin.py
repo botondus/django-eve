@@ -8,6 +8,10 @@ class EVEInventoryCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'is_published')
 admin.site.register(EVEInventoryCategory, EVEInventoryCategoryAdmin)
 
+class BloodlineAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'race', 'corporation')
+admin.site.register(Bloodline, BloodlineAdmin)
+
 class EVEInventoryMetaGroupAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'graphic')
 admin.site.register(EVEInventoryMetaGroup, EVEInventoryMetaGroupAdmin)
