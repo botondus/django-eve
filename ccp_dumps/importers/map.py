@@ -2,15 +2,15 @@
 """
 Import map data.
 """
-import os
-import sqlite3
-import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
+    import os
+    import sqlite3
+    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
-def do_import_universes(conn):
+def import_mapUniverse(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from mapUniverse'):
@@ -30,7 +30,7 @@ def do_import_universes(conn):
         imp_obj.save()
     c.close()
     
-def do_import_region(conn):
+def import_mapRegions(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from mapRegions'):
@@ -52,7 +52,7 @@ def do_import_region(conn):
         imp_obj.save()
     c.close()
     
-def do_import_constellation(conn):
+def import_mapConstellations(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from mapConstellations'):
@@ -80,7 +80,7 @@ def do_import_constellation(conn):
         imp_obj.save()
     c.close()
     
-def do_import_solarsystem(conn):
+def import_mapSolarSystems(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from mapSolarSystems'):
@@ -140,16 +140,13 @@ def do_import_solarsystem(conn):
         imp_obj.save()
     c.close()
             
-def do_import():
+if __name__ == "__main__":
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
 
     """
-    do_import_universes(conn)
-    do_import_region(conn)
-    do_import_constellation(conn)
+    import_mapUniverse(conn)
+    import_mapRegions(conn)
+    import_mapConstellations(conn)
     """
-    do_import_solarsystem(conn)
-
-if __name__ == "__main__":
-    do_import()
+    import_mapSolarSystems(conn)

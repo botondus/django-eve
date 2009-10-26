@@ -5,15 +5,15 @@ Import character data.
 Tables imported:
 chrRaces
 """
-import os
-import sqlite3
-import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
+    import os
+    import sqlite3
+    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
-def do_import_races(conn):
+def import_chrRaces(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from chrRaces'):
@@ -29,7 +29,7 @@ def do_import_races(conn):
         imp_obj.save()
     c.close()
     
-def do_import_factions(conn):
+def import_chrFactions(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from chrFactions'):
@@ -52,7 +52,7 @@ def do_import_factions(conn):
         imp_obj.save()
     c.close()
     
-def do_import_bloodlines(conn):
+def import_chrBloodlines(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from chrBloodlines'):
@@ -77,7 +77,7 @@ def do_import_bloodlines(conn):
         imp_obj.save()
     c.close()
     
-def do_import_ancestries(conn):
+def import_chrAncestries(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from chrAncestries'):
@@ -96,14 +96,11 @@ def do_import_ancestries(conn):
         imp_obj.save()
     c.close()
 
-def do_import():
+if __name__ == "__main__":
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
     
-    do_import_races(conn)
-    do_import_factions(conn)
-    do_import_bloodlines(conn)
-    do_import_ancestries(conn)
-
-if __name__ == "__main__":
-    do_import()
+    import_chrRaces(conn)
+    import_chrFactions(conn)
+    import_chrBloodlines(conn)
+    import_chrAncestries(conn)

@@ -2,15 +2,15 @@
 """
 Import inventory data.
 """
-import os
-import sqlite3
-import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
+    import os
+    import sqlite3
+    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
-def do_import_categories(conn):
+def import_invCategories(conn):
     """
     Handle the import.
     """
@@ -36,7 +36,7 @@ def do_import_categories(conn):
     # Clean up.
     c.close()
     
-def do_import_groups(conn):
+def import_invGroups(conn):
     """
     Handle the import.
     """
@@ -69,7 +69,7 @@ def do_import_groups(conn):
     # Clean up.
     c.close()
 
-def do_import_meta_groups(conn):
+def import_invMetaGroups(conn):
     """
     invMetaGroup
     """
@@ -87,7 +87,7 @@ def do_import_meta_groups(conn):
 
     c.close()
 
-def do_import_market_groups(conn):
+def import_invMarketGroups(conn):
     """
     Handle the import.
     """
@@ -114,7 +114,7 @@ def do_import_market_groups(conn):
     # Clean up.
     c.close()
     
-def do_import_invtypes(conn):
+def import_invTypes(conn):
     """
     Handle the import.
     """
@@ -150,7 +150,7 @@ def do_import_invtypes(conn):
     # Clean up.
     c.close()
     
-def do_import_metatypes(conn):
+def import_invMetaTypes(conn):
     """
     invMetaTypes
     """
@@ -169,7 +169,7 @@ def do_import_metatypes(conn):
 
 
 
-def do_import_eve_units(conn):
+def import_eveUnits(conn):
     """
     Handle the import.
     """
@@ -186,11 +186,7 @@ def do_import_eve_units(conn):
     # Clean up.
     c.close()
 
-def do_import_attribute_categories(conn):
-    """
-    Handle the import.
-    """
-
+def import_dgmAttributeCategories(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from dgmattributecategories'):
@@ -203,11 +199,7 @@ def do_import_attribute_categories(conn):
     # Clean up.
     c.close()
 
-def do_import_attribute_types(conn):
-    """
-    Handle the import.
-    """
-
+def import_dgmAttributeTypes(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from dgmattributetypes'):
@@ -237,11 +229,7 @@ def do_import_attribute_types(conn):
     # Clean up.
     c.close()
 
-def do_import_inventory_type_attributes(conn):
-    """
-    Handle the import.
-    """
-
+def import_dgmTypeAttributes(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from dgmtypeattributes'):    
@@ -262,10 +250,7 @@ def do_import_inventory_type_attributes(conn):
     c.close()
 
     
-def do_import_effects(conn):
-    """
-    dgmEffects
-    """
+def import_dgmEffects(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from dgmEffects'):
@@ -342,10 +327,7 @@ def do_import_effects(conn):
     # Clean up.
     c.close()
     
-def do_import_type_effects(conn):
-    """
-    dgmTypeEffects
-    """
+def import_dgmTypeEffects(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from dgmTypeEffects'):
@@ -358,10 +340,7 @@ def do_import_type_effects(conn):
         imp_obj.save()
     c.close()
     
-def do_import_flags(conn):
-    """
-    invFlags
-    """
+def import_invFlags(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from invFlags'):        
@@ -373,10 +352,7 @@ def do_import_flags(conn):
         imp_obj.save()
     c.close()
     
-def do_import_blueprint_types(conn):
-    """
-    Import blueprint types.
-    """
+def import_invBlueprintTypes(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from invBlueprintTypes'):
@@ -402,10 +378,7 @@ def do_import_blueprint_types(conn):
     # Clean up.
     c.close()
     
-def do_import_pos_fuel_purposes(conn):
-    """
-    invControlTowerResourcePurposes
-    """
+def import_invControlTowerResourcePurposes(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from invControlTowerResourcePurposes'):
@@ -414,10 +387,7 @@ def do_import_pos_fuel_purposes(conn):
         imp_obj.save()
     c.close()
     
-def do_import_pos_fuel(conn):
-    """
-    invControlTowerResources
-    """
+def import_invControlTowerResources(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from invControlTowerResources'):
@@ -433,10 +403,7 @@ def do_import_pos_fuel(conn):
         imp_obj.save()
     c.close()
 
-def do_import_activity_materials(conn):
-    """
-    Import the activity materials.
-    """
+def import_typeActivityMaterials(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from typeActivityMaterials'):
@@ -455,7 +422,7 @@ def do_import_activity_materials(conn):
     # Clean up.
     c.close()
     
-def do_import_type_reactions(conn):
+def import_invTypeReactions(conn):
     """
     Import POS reactions.
     
@@ -474,10 +441,7 @@ def do_import_type_reactions(conn):
         imp_obj.save()
     c.close()
     
-def do_import_contraband(conn):
-    """
-    invContrabandTypes
-    """
+def import_invContrabandTypes(conn):
     c = conn.cursor()
 
     for row in c.execute('select * from invContrabandTypes'):
@@ -493,10 +457,7 @@ def do_import_contraband(conn):
         imp_obj.save()
     c.close()
     
-def do_import_eve_names(conn):
-    """
-    Import eveNames table.
-    """
+def import_eveNames(conn):
     c = conn.cursor()
     for row in c.execute('select * from eveNames'):
         imp_obj, created = EVEInventoryName.objects.get_or_create(id=row['itemID'])
@@ -507,30 +468,27 @@ def do_import_eve_names(conn):
         imp_obj.save()
     c.close()
         
-def do_import():
+if __name__ == "__main__":
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
 
-    do_import_categories(conn)
-    do_import_groups(conn)
-    do_import_market_groups(conn)
-    do_import_invtypes(conn)
-    do_import_eve_units(conn)
-    do_import_attribute_categories(conn)
-    do_import_attribute_types(conn)
-    do_import_inventory_type_attributes(conn)
-    do_import_blueprint_types(conn)
-    do_import_activity_materials(conn)
-    do_import_eve_names(conn)
-    do_import_meta_groups(conn)
-    do_import_metatypes(conn)
-    do_import_flags(conn)
-    do_import_effects(conn)
-    do_import_type_effects(conn)
-    do_import_type_reactions(conn)
-    do_import_pos_fuel_purposes(conn)
-    do_import_pos_fuel(conn)
-    do_import_contraband(conn)
-
-if __name__ == "__main__":
-    do_import()
+    import_invCategories(conn)
+    import_invGroups(conn)
+    import_invMetaGroups(conn)
+    import_invMarketGroups(conn)
+    import_invTypes(conn)
+    import_invMetaTypes(conn)
+    import_eveUnits(conn)
+    import_dgmAttributeCategories(conn)
+    import_dgmAttributeTypes(conn)
+    import_dgmTypeAttributes(conn)
+    import_dgmEffects(conn)
+    import_dgmTypeEffects(conn)
+    import_invFlags(conn)
+    import_invBlueprintTypes(conn)
+    import_invControlTowerResourcePurposes(conn)
+    import_invControlTowerResources(conn)
+    import_typeActivityMaterials(conn)
+    import_invTypeReactions(conn)
+    import_invContrabandTypes(conn)
+    import_eveNames(conn)

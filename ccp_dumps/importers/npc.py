@@ -2,15 +2,15 @@
 """
 Import NPC corp/agent data.
 """
-import os
-import sqlite3
-import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
+    import os
+    import sqlite3
+    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
-def do_import_activities(conn):
+def import_crpActivities(conn):
     """
     crpActivities
     """
@@ -23,7 +23,7 @@ def do_import_activities(conn):
         imp_obj.save()
     c.close()
     
-def do_import_npc_corps(conn):
+def import_crpNPCCorporations(conn):
     """
     Needs EVEInventoryName to be imported beforehand.
     
@@ -89,7 +89,7 @@ def do_import_npc_corps(conn):
         imp_obj.save()
     c.close()
     
-def do_import_npc_divisions(conn):
+def import_crpNPCDivisions(conn):
     """
     crpActivities
     """
@@ -103,13 +103,10 @@ def do_import_npc_divisions(conn):
         imp_obj.save()
     c.close()
 
-def do_import():
+if __name__ == "__main__":
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
     
-    do_import_activities(conn)
-    do_import_npc_corps(conn)
-    do_import_npc_divisions(conn)
-
-if __name__ == "__main__":
-    do_import()
+    import_crpActivities(conn)
+    import_crpNPCCorporations(conn)
+    import_crpNPCDivisions(conn)

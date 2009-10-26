@@ -2,15 +2,15 @@
 """
 Import station related data.
 """
-import os
-import sqlite3
-import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
+    import os
+    import sqlite3
+    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
-def do_import_ram_activities(conn):
+def import_ramActivities(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from ramActivities'):
@@ -29,7 +29,7 @@ def do_import_ram_activities(conn):
         imp_obj.save()
     c.close()
     
-def do_import_station_services(conn):
+def import_staServices(conn):
     c = conn.cursor()
     
     for row in c.execute('select * from staServices'):
@@ -38,13 +38,10 @@ def do_import_station_services(conn):
         imp_obj.description = row['description']
         imp_obj.save()
     c.close()
-
-def do_import():
+    
+if __name__ == "__main__":
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
     
-    do_import_ram_activities(conn)
-    do_import_station_services(conn)
-    
-if __name__ == "__main__":
-    do_import()
+    import_ramActivities(conn)
+    import_staServices(conn)
