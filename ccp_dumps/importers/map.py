@@ -2,11 +2,11 @@
 """
 Import map data.
 """
+import constants
 # Setup the Django environment if this is being executed directly.
 if __name__ == "__main__":
     import os
     import sqlite3
-    import constants
     constants.setup_environment()
 from apps.eve_db.models import *
 
