@@ -81,10 +81,14 @@ if __name__ == "__main__":
     #print "OPTIONS", options
     #print "ARGS:", args
     
-    if len(args) == 0:
-        print "No table names specified, importing all."
-        util.run_importers(util.IMPORT_LIST)
-    else:
-        print "Importing: %s" % args
-        importers = get_importer_classes_from_arg_list(args)
+    try:
+        if len(args) == 0:
+            print "No table names specified, importing all."
+            util.run_importers(util.IMPORT_LIST)
+        else:
+            print "Importing: %s" % args
+            importers = get_importer_classes_from_arg_list(args)
+    except KeyboardInterrupt:
+        print "Terminating early..."
+        exit_with_succ()
         util.run_importers(importers)
