@@ -88,7 +88,8 @@ if __name__ == "__main__":
         else:
             print "Importing: %s" % args
             importers = get_importer_classes_from_arg_list(args)
+            util.run_importers(importers)
     except KeyboardInterrupt:
         print "Terminating early..."
         exit_with_succ()
-        util.run_importers(importers)
+        
