@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from optparse import make_option
 import sys
 from eve_db.ccp_importer import util
@@ -8,7 +9,8 @@ def exit_with_error(error_msg):
     """
     Gracefully kills the script when an error was occured.
     """
-    parser.error(error_msg)
+    print error_msg
+    sys.exit(1)
     
 def exit_with_succ():
     """
@@ -27,6 +29,20 @@ def list_tables(option, opt, value, parser):
     print "-- %d tables --" % len(util.IMPORT_LIST)
     # The -l argument is just used for listing, proceed no further.
     exit_with_succ()
+    
+def check_for_eve_db():
+    """
+    Checks for the presence of the CCP EVE dump in SQLite format. Exit if
+    this can't be found.
+    """
+    try:
+        dbfile = open(settings.EVE_CCP_DUMP_SQLITE_DB, 'r')
+    except IOError:
+        exit_with_error("""No CCP data dump could be found. Visit 
+http://wiki.eve-id.net/CCP_Database_Dump_Resources#Conversions
+and download the latest SQLite conversion. Copy the SQLite .db file to the 
+same directory as your settings.py file and re-name it to ccp_dump.db. You 
+should then be able to run this command without issue.""")
     
 def get_importer_classes_from_arg_list(arg_list):
     """
@@ -67,8 +83,9 @@ the CCP data dump. If no arguments are specified, all tables will be imported.""
         This is where the user input is handled, and the appropriate
         actions are taken.
         """
-        print "OPTIONS", options
-        print "ARGS:", args
+        #print "OPTIONS", options
+        #print "ARGS:", args
+        check_for_eve_db()
         
         try:
             if len(args) == 0:
