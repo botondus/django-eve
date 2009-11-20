@@ -1,87 +1,90 @@
 import sqlite3
+from importers import constants
 from importers import *
 
 # These are references to importer functions. They are ran in the order
 # they appear in this list. Any lines that are commented out are importers
 # that have not been written yet.
-IMPORT_LIST = [import_chrFactions,
-               import_mapRegions,
-               #import_mapRegionJumps,
-               import_mapConstellations,
-               #import_mapConstellationJumps,
-               #import_agtAgentTypes,
-               import_crpNPCDivisions,
-               import_crpActivities,
-               import_eveGraphics,
-               import_eveUnits,
-               import_invMetaGroups,
-               import_invFlags,
-               import_invMarketGroups,
-               import_invControlTowerResourcePurposes,
-               import_mapUniverse,
-               import_staServices,
-               #import_ramCompletedStatuses,
-               #import_ramAssemblyLineTypes,
-               import_ramActivities,
-               import_invCategories,
-               import_invGroups,
-               import_chrRaces,
-               import_invTypes,
-               import_invControlTowerResources,
-               import_chrBloodlines,
-               import_chrAncestries,
-               import_mapSolarSystems,
-               #import_mapSolarSystemJumps,
-               #import_mapDenormalize,
-               #import_mapJumps,
-               #import_mapCelestialStatistics,
-               #import_mapLandmarks,
-               import_eveNames,
-               import_invContrabandTypes,
-               import_invTypeReactions,
-               import_invBlueprintTypes,
-               import_invMetaTypes,
-               import_dgmAttributeCategories,
-               import_dgmAttributeTypes,
-               import_dgmTypeAttributes,
-               import_dgmEffects,
-               import_dgmTypeEffects,               
-               #import_chrRaceSkills,
-               #import_chrAttributes,
-               #import_ramAssemblyLineTypeDetailPerCategory,
-               #import_ramAssemblyLineTypeDetailPerGroup,
-               import_typeActivityMaterials,
-               import_crpNPCCorporations,
-               #import_crpNPCCorporationDivisions,
-               #import_crpNPCCorporationTrades,
-               #import_crpNPCCorporationResearchFields,
-               #import_staStationTypes,
-               #import_staOperations,
-               #import_staStations,
-               #import_ramAssemblyLines,
-               #import_staOperationServices,
-               #import_ramAssemblyLineStations,
-               #import_agtAgents,
-               #import_agtConfig,
-               #import_chrCareers,
-               #import_chrCareerSkills,
-               #import_chrSchools,
-               #import_chrSchoolAgents,
-               #import_chrCareerSpecialities,
-               #import_chrCareerSpecialitySkills,
+IMPORT_LIST = [Importer_chrFactions,
+               Importer_mapRegions,
+               #Importer_mapRegionJumps,
+               Importer_mapConstellations,
+               #Importer_mapConstellationJumps,
+               #Importer_agtAgentTypes,
+               Importer_crpNPCDivisions,
+               Importer_crpActivities,
+               Importer_eveGraphics,
+               Importer_eveUnits,
+               Importer_invMetaGroups,
+               Importer_invFlags,
+               Importer_invMarketGroups,
+               Importer_invControlTowerResourcePurposes,
+               Importer_mapUniverse,
+               Importer_staServices,
+               #Importer_ramCompletedStatuses,
+               #Importer_ramAssemblyLineTypes,
+               Importer_ramActivities,
+               Importer_invCategories,
+               Importer_invGroups,
+               Importer_chrRaces,
+               Importer_invTypes,
+               Importer_invControlTowerResources,
+               Importer_chrBloodlines,
+               Importer_chrAncestries,
+               Importer_mapSolarSystems,
+               #Importer_mapSolarSystemJumps,
+               #Importer_mapDenormalize,
+               #Importer_mapJumps,
+               #Importer_mapCelestialStatistics,
+               #Importer_mapLandmarks,
+               Importer_eveNames,
+               Importer_invContrabandTypes,
+               Importer_invTypeReactions,
+               Importer_invBlueprintTypes,
+               Importer_invMetaTypes,
+               Importer_dgmAttributeCategories,
+               Importer_dgmAttributeTypes,
+               Importer_dgmTypeAttributes,
+               Importer_dgmEffects,
+               Importer_dgmTypeEffects,               
+               #Importer_chrRaceSkills,
+               #Importer_chrAttributes,
+               #Importer_ramAssemblyLineTypeDetailPerCategory,
+               #Importer_ramAssemblyLineTypeDetailPerGroup,
+               Importer_typeActivityMaterials,
+               Importer_crpNPCCorporations,
+               #Importer_crpNPCCorporationDivisions,
+               #Importer_crpNPCCorporationTrades,
+               #Importer_crpNPCCorporationResearchFields,
+               #Importer_staStationTypes,
+               #Importer_staOperations,
+               #Importer_staStations,
+               #Importer_ramAssemblyLines,
+               #Importer_staOperationServices,
+               #Importer_ramAssemblyLineStations,
+               #Importer_agtAgents,
+               #Importer_agtConfig,
+               #Importer_chrCareers,
+               #Importer_chrCareerSkills,
+               #Importer_chrSchools,
+               #Importer_chrSchoolAgents,
+               #Importer_chrCareerSpecialities,
+               #Importer_chrCareerSpecialitySkills,
                ]
     
-def run_importers(importer_funcs):
+def run_importers(importer_classes):
     """
-    importer_funcs: (list) References to the importer functions to run.
+    importer_classes: (list) References to the importer classes to run.
     """     
     # Create the SQLite connection object.
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
-    
+        
     # Carry out the imports in order.
-    for importer in importer_funcs:
-        print "  - %s" % importer.__name__
-        importer(conn)
+    for importer_class in importer_classes:
+        importer = importer_class()
+        importer_name = importer.__class__.__name__.split('_')[1]
+        print "  - %s" % importer_name
+        importer.run_importer(conn)
         
     print "Importing complete."

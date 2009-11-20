@@ -56,21 +56,21 @@ def list_tables(option, opt, value, parser):
     # The -l argument is just used for listing, proceed no further.
     exit_with_succ()
 
-def get_importer_funcs_from_arg_list(arg_list):
+def get_importer_classes_from_arg_list(arg_list):
     """
     Validates the user input for tables to import against the importer list.
-    Returns a list of importer functions. In the event that one of the
-    arguments does not match up against an importer function, raise an
+    Returns a list of importer classes. In the event that one of the
+    arguments does not match up against an importer class, raise an
     exception so the user may be notified.
     """
-    importer_funcs = []
+    importer_classes = []
     for arg in arg_list:
-        importer_func = getattr(importers, 'import_%s' % arg, False)
-        if importer_func not in util.IMPORT_LIST:
+        importer_class = getattr(importers, 'Importer_%s' % arg, False)
+        if importer_class not in util.IMPORT_LIST:
             exit_with_error("No such table to import: %s" % arg)
         else:
-            importer_funcs.append(importer_func)
-    return importer_funcs
+            importer_classes.append(importer_class)
+    return importer_classes
 
 #==================
 # Begin main logic
@@ -78,13 +78,13 @@ def get_importer_funcs_from_arg_list(arg_list):
 if __name__ == "__main__":
     parser = instantiate_parser()
     (options, args) = parser.parse_args()
-    print "OPTIONS", options
-    print "ARGS:", args
+    #print "OPTIONS", options
+    #print "ARGS:", args
     
     if len(args) == 0:
         print "No table names specified, importing all."
         util.run_importers(util.IMPORT_LIST)
     else:
         print "Importing: %s" % args
-        importers = get_importer_funcs_from_arg_list(args)
+        importers = get_importer_classes_from_arg_list(args)
         util.run_importers(importers)
