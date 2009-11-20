@@ -71,6 +71,18 @@ IMPORT_LIST = [Importer_chrFactions,
                #Importer_chrCareerSpecialities,
                #Importer_chrCareerSpecialitySkills,
                ]
+
+def order_importers(importer_classes):
+    """
+    Given a list of importer classes, order them based on their dependencies.
+    
+    importer_classes: (list) References to the importer classes to run.
+    """
+    ordered = []
+    for importer_class in IMPORT_LIST:
+        if importer_class in importer_classes:
+            ordered.append(importer_class)
+    return ordered
     
 def run_importers(importer_classes):
     """
@@ -80,8 +92,10 @@ def run_importers(importer_classes):
     conn = sqlite3.connect(constants.DB_FILE)
     conn.row_factory = sqlite3.Row
         
+    ordered_importers = order_importers(importer_classes)
+        
     # Carry out the imports in order.
-    for importer_class in importer_classes:
+    for importer_class in ordered_importers:
         importer = importer_class()
         importer_name = importer.__class__.__name__.split('_')[1]
         print "  - %s" % importer_name
