@@ -6,11 +6,6 @@ Tables imported:
 chrRaces
 """
 import constants
-# Setup the Django environment if this is being executed directly.
-if __name__ == "__main__":
-    import os
-    import sqlite3
-    constants.setup_environment()
 from apps.eve_db.models import *
 
 def import_chrRaces(conn):
@@ -95,12 +90,3 @@ def import_chrAncestries(conn):
             imp_obj.graphic = EVEGraphic.objects.get(id=row['graphicID'])
         imp_obj.save()
     c.close()
-
-if __name__ == "__main__":
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
-    
-    import_chrRaces(conn)
-    import_chrFactions(conn)
-    import_chrBloodlines(conn)
-    import_chrAncestries(conn)

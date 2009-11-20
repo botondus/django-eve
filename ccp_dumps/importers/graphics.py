@@ -1,16 +1,8 @@
 #!/usr/bin/env python
 """
 Import graphic data.
-
-Tables imported:
-eveGraphics
 """
 import constants
-# Setup the Django environment if this is being executed directly.
-if __name__ == "__main__":
-    import os
-    import sqlite3
-    constants.setup_environment()
 from apps.eve_db.models import EVEGraphic
 
 def import_eveGraphics(conn):
@@ -39,9 +31,3 @@ def import_eveGraphics(conn):
 
     # Clean up.
     c.close()
-
-if __name__ == "__main__":
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
-
-    import_eveGraphics(conn)

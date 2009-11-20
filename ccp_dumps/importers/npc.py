@@ -3,12 +3,6 @@
 Import NPC corp/agent data.
 """
 import constants
-# Setup the Django environment if this is being executed directly.
-if __name__ == "__main__":
-    import os
-    import sqlite3
-    import constants
-    constants.setup_environment()
 from apps.eve_db.models import *
 
 def import_crpActivities(conn):
@@ -103,11 +97,3 @@ def import_crpNPCDivisions(conn):
         imp_obj.leader_type = row['leaderType']
         imp_obj.save()
     c.close()
-
-if __name__ == "__main__":
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
-    
-    import_crpActivities(conn)
-    import_crpNPCCorporations(conn)
-    import_crpNPCDivisions(conn)

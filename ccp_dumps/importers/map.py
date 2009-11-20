@@ -2,12 +2,6 @@
 """
 Import map data.
 """
-import constants
-# Setup the Django environment if this is being executed directly.
-if __name__ == "__main__":
-    import os
-    import sqlite3
-    constants.setup_environment()
 from apps.eve_db.models import *
 
 def import_mapUniverse(conn):
@@ -139,14 +133,3 @@ def import_mapSolarSystems(conn):
 
         imp_obj.save()
     c.close()
-            
-if __name__ == "__main__":
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
-
-    """
-    import_mapUniverse(conn)
-    import_mapRegions(conn)
-    import_mapConstellations(conn)
-    """
-    import_mapSolarSystems(conn)

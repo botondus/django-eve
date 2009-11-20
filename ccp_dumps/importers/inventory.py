@@ -2,12 +2,6 @@
 """
 Import inventory data.
 """
-# Setup the Django environment if this is being executed directly.
-import constants
-if __name__ == "__main__":
-    import os
-    import sqlite3
-    constants.setup_environment()
 from apps.eve_db.models import *
 
 def import_invCategories(conn):
@@ -467,28 +461,3 @@ def import_eveNames(conn):
         imp_obj.type = EVEInventoryType.objects.get(id=row['typeID'])
         imp_obj.save()
     c.close()
-        
-if __name__ == "__main__":
-    conn = sqlite3.connect(constants.DB_FILE)
-    conn.row_factory = sqlite3.Row
-
-    import_invCategories(conn)
-    import_invGroups(conn)
-    import_invMetaGroups(conn)
-    import_invMarketGroups(conn)
-    import_invTypes(conn)
-    import_invMetaTypes(conn)
-    import_eveUnits(conn)
-    import_dgmAttributeCategories(conn)
-    import_dgmAttributeTypes(conn)
-    import_dgmTypeAttributes(conn)
-    import_dgmEffects(conn)
-    import_dgmTypeEffects(conn)
-    import_invFlags(conn)
-    import_invBlueprintTypes(conn)
-    import_invControlTowerResourcePurposes(conn)
-    import_invControlTowerResources(conn)
-    import_typeActivityMaterials(conn)
-    import_invTypeReactions(conn)
-    import_invContrabandTypes(conn)
-    import_eveNames(conn)

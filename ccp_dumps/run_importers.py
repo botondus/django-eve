@@ -37,7 +37,8 @@ def instantiate_parser():
                           usage="Usage: %prog [-i] [table_name1] [table_name2] [...]")
     parser.add_option("-i", "--include-deps", action="store_true",
                       dest="include_deps", default=False,
-                      help="Import the other tables that the specified table [recursively] depends on.")
+                      help="""Import the other tables that the specified table 
+                              [recursively] depends on.""")
     parser.add_option("-l", "--list", action="callback",
                       callback=list_tables,
                       help="List all of the tables in the CCP dump and exit.")
