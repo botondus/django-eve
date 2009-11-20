@@ -105,6 +105,9 @@ INSTALLED_APPS = (
     'apps.eve_db',
 )
 
+# Path to the CCP SQLite DB dump.
+EVE_CCP_DUMP_SQLITE_DB = os.path.join(BASE_PATH, 'apo15-sqlite3-v1.db')
+
 # A user ID to use to get API information.
 EVE_API_USER_ID = 3552139
 # A user limited or full API key for API querying.
