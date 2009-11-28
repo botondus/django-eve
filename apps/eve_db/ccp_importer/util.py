@@ -115,7 +115,7 @@ def add_dependencies(importer_classes):
         # Look through all originally requested importers and add
         # their dependencies to the importer list.
         _recursively_find_dependencies(importer_class, importer_classes)
-    print "CLASSES:", importer_classes
+    #print "CLASSES:", importer_classes
     
 def run_importers(importer_classes, include_deps=False):
     """

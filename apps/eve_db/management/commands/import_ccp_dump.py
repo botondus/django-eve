@@ -83,8 +83,8 @@ the CCP data dump. If no arguments are specified, all tables will be imported.""
         This is where the user input is handled, and the appropriate
         actions are taken.
         """
-        print "OPTIONS", options
-        print "ARGS:", args
+        #print "OPTIONS", options
+        #print "ARGS:", args
         check_for_eve_db()
         
         try:

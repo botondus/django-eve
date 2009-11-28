@@ -5,6 +5,7 @@ from apps.eve_db.models import *
 from importer_classes import SQLImporter
 
 class Importer_chrRaces(SQLImporter):
+    DEPENDENCIES = ['eveGraphics']
     def run_importer(self, conn):
         c = conn.cursor()
         
@@ -22,6 +23,7 @@ class Importer_chrRaces(SQLImporter):
         c.close()
 
 class Importer_chrFactions(SQLImporter):
+    DEPENDENCIES = ['mapSolarSystems', 'crpNPCCorporations']
     def run_importer(self, conn):
         c = conn.cursor()
         
@@ -46,6 +48,7 @@ class Importer_chrFactions(SQLImporter):
         c.close()
 
 class Importer_chrBloodlines(SQLImporter):
+    DEPENDENCIES = ['chrRaces', 'invTypes', 'crpNPCCorporations', 'eveGraphics']
     def run_importer(self, conn):
         c = conn.cursor()
         
@@ -72,6 +75,7 @@ class Importer_chrBloodlines(SQLImporter):
         c.close()
 
 class Importer_chrAncestries(SQLImporter):
+    DEPENDENCIES = ['chrBloodlines', 'invTypes', 'eveGraphics']
     def run_importer(self, conn):
         c = conn.cursor()
         
