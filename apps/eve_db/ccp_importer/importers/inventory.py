@@ -142,19 +142,6 @@ class Importer_invMetaTypes(SQLImporter):
             imp_obj.save()
         c.close()
 
-class Importer_eveUnits(SQLImporter):
-    def run_importer(self, conn):
-        c = conn.cursor()
-        
-        for row in c.execute('select * from eveUnits'):
-            imp_obj, created = EVEUnit.objects.get_or_create(id=row['unitid'])
-            imp_obj.name = row['unitname']
-            imp_obj.display_name = row['displayname']
-            imp_obj.description = row['description']
-    
-            imp_obj.save()
-        c.close()
-
 class Importer_dgmAttributeCategories(SQLImporter):
     def run_importer(self, conn):
         c = conn.cursor()
@@ -421,18 +408,5 @@ class Importer_invContrabandTypes(SQLImporter):
             imp_obj.fine_by_value = row['fineByValue']
             imp_obj.attack_min_sec = row['attackMinSec']
             
-            imp_obj.save()
-        c.close()
-    
-class Importer_eveNames(SQLImporter):
-    def run_importer(self, conn):
-        c = conn.cursor()
-
-        for row in c.execute('select * from eveNames'):
-            imp_obj, created = EVEInventoryName.objects.get_or_create(id=row['itemID'])
-            imp_obj.name = row['itemName']
-            imp_obj.category = EVEInventoryCategory.objects.get(id=row['categoryID'])
-            imp_obj.group = EVEInventoryGroup.objects.get(id=row['groupID'])
-            imp_obj.type = EVEInventoryType.objects.get(id=row['typeID'])
             imp_obj.save()
         c.close()
