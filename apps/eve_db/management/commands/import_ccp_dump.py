@@ -51,13 +51,13 @@ def get_importer_classes_from_arg_list(arg_list):
     arguments does not match up against an importer class, raise an
     exception so the user may be notified.
     """
-    importer_classes = []
+    importer_classes = set()
     for arg in arg_list:
         importer_class = getattr(importers, 'Importer_%s' % arg, False)
         if importer_class not in util.IMPORT_LIST:
             exit_with_error("No such table to import: %s" % arg)
         else:
-            importer_classes.append(importer_class)
+            importer_classes.add(importer_class)
     return importer_classes
 
 class Command(BaseCommand):
@@ -83,8 +83,8 @@ the CCP data dump. If no arguments are specified, all tables will be imported.""
         This is where the user input is handled, and the appropriate
         actions are taken.
         """
-        #print "OPTIONS", options
-        #print "ARGS:", args
+        print "OPTIONS", options
+        print "ARGS:", args
         check_for_eve_db()
         
         try:
@@ -94,7 +94,12 @@ the CCP data dump. If no arguments are specified, all tables will be imported.""
             else:
                 print "Importing: %s" % args
                 importers = get_importer_classes_from_arg_list(args)
-                util.run_importers(importers)
+                
+                include_deps = options.get('include_deps')
+                if include_deps:
+                    print "Calculating dependencies."
+
+                util.run_importers(importers, include_deps=include_deps)
         except KeyboardInterrupt:
             print "Terminating early..."
             exit_with_succ()

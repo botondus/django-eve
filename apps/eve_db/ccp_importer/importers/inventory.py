@@ -6,6 +6,7 @@ from eve_db.models import *
 from importer_classes import SQLImporter
 
 class Importer_invCategories(SQLImporter):
+    DEPENDENCIES = ['eveGraphics']
     def run_importer(self, conn):
         c = conn.cursor()
         

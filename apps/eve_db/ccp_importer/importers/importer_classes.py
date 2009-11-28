@@ -7,7 +7,7 @@ class SQLImporter(object):
     Serves as the encapsulating class for importers.
     """
     # A list of other table names that this class depends on (strings).
-    dependencies = []
+    DEPENDENCIES = []
     
     def run_importer(self):
         """

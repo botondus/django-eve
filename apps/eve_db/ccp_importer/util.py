@@ -1,6 +1,9 @@
 import sqlite3
 from django.conf import settings
+# Import this way for brevity in IMPORT_LIST.
 from importers import *
+# Import this way as well for getattr()
+import importers
 
 # These are references to importer functions. They are ran in the order
 # they appear in this list. Any lines that are commented out are importers
@@ -83,14 +86,47 @@ def order_importers(importer_classes):
         if importer_class in importer_classes:
             ordered.append(importer_class)
     return ordered
+
+def _recursively_find_dependencies(importer_class, importer_classes):
+    """
+    Recursively search for and add the given class's dependencies.
+
+    importer_class: (SQLImporter) The importer class to check for dependencies.
+    importer_classes: (list) References to the importer classes to run.
+    """
+    for dependency in importer_class.DEPENDENCIES:
+        # Get the importer class from the table name.
+        dependency_class = getattr(importers, 'Importer_%s' % dependency)
+        # Add the dependency to the master list of importer classes to run.
+        importer_classes.add(dependency_class)
+        # Find the dependencies of this dependency.
+        _recursively_find_dependencies(dependency_class, importer_classes)
+
+def add_dependencies(importer_classes):
+    """
+    Given a list of importer classes, add any dependencies needed for a
+    complete import of the given tables.
     
-def run_importers(importer_classes):
+    importer_classes: (list) References to the importer classes to run.
+    """
+    # Make a copy so the Set size doesn't change during iteration.
+    original = importer_classes.copy()
+    for importer_class in original:
+        # Look through all originally requested importers and add
+        # their dependencies to the importer list.
+        _recursively_find_dependencies(importer_class, importer_classes)
+    print "CLASSES:", importer_classes
+    
+def run_importers(importer_classes, include_deps=False):
     """
     importer_classes: (list) References to the importer classes to run.
     """     
     # Create the SQLite connection object.
     conn = sqlite3.connect(settings.EVE_CCP_DUMP_SQLITE_DB)
     conn.row_factory = sqlite3.Row
+
+    if include_deps:
+        add_dependencies(importer_classes)
         
     ordered_importers = order_importers(importer_classes)
         
