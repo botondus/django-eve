@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Import graphic data.
+Import various important system tables.
 """
 from apps.eve_db.models import *
 from importer_classes import SQLImporter
@@ -14,7 +14,6 @@ class Importer_eveUnits(SQLImporter):
             imp_obj.name = row['unitname']
             imp_obj.display_name = row['displayname']
             imp_obj.description = row['description']
-    
             imp_obj.save()
         c.close()
         

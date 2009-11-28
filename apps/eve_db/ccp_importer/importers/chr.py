@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Import character data.
 """
