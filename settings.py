@@ -102,7 +102,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django_extensions',
     'eve_proxy',
-    'apps.eve_db',
+    'eve_db',
+    'eve_api',
 )
 
 # Path to the CCP SQLite DB dump.
