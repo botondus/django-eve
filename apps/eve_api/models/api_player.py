@@ -3,7 +3,7 @@ This module holds data from the EVE XML API.
 """
 from django.db import models
 from eve_proxy.models import CachedDocument
-from apps.eve_db.managers import EVEPlayerCorporationManager, EVEPlayerAllianceManager, EVEPlayerCharacterManager
+from eve_api.managers import EVEPlayerCorporationManager, EVEPlayerAllianceManager, EVEPlayerCharacterManager
 
 class EVEPlayerCharacter(models.Model):
     """

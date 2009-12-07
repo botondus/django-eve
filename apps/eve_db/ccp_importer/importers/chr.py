@@ -1,7 +1,7 @@
 """
 Import character data.
 """
-from apps.eve_db.models import *
+from eve_db.models import *
 from importer_classes import SQLImporter
 
 class Importer_chrRaces(SQLImporter):

@@ -15,8 +15,8 @@ if __name__ == "__main__":
     fix_environment() 
      
 from django.conf import settings
-from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
-from apps.eve_proxy.models import CachedDocument
+from eve_api.models import EVEPlayerAlliance, EVEPlayerCorporation
+from eve_proxy.models import CachedDocument
 
 # This stores a list of all corps whose alliance attribute has been updated.
 UPDATED_CORPS = []

@@ -2,7 +2,7 @@
 Admin interface models. Automatically detected by admin.autodiscover().
 """
 from django.contrib import admin
-from apps.eve_db.models import *
+from eve_db.models import *
 
 class EVEInventoryCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'is_published')

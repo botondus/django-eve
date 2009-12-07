@@ -1,7 +1,7 @@
 """
 Import station related data.
 """
-from apps.eve_db.models import *
+from eve_db.models import *
 from importer_classes import SQLImporter
 
 class Importer_ramActivities(SQLImporter):

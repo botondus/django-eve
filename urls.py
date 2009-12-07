@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     # This is the entry you'd need if you just wanted to serve a proxy.
     # You'll need to create another site if you want to serve this alongside
     # other content.
-    #(r'^', include('apps.eve_proxy.urls')),
+    #(r'^', include('eve_proxy.urls')),
 )
 
 # If you'd like to serve media files via Django (strongly not recommended!),
@@ -20,5 +20,6 @@ urlpatterns = patterns('',
 # static content to handle media files (apache, lighttpd).
 if settings.SERVE_MEDIA:
     urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', 
+         {'document_root': settings.MEDIA_ROOT}),
     )

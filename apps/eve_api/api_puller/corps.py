@@ -15,7 +15,7 @@ if __name__ == "__main__":
     from importer_path import fix_environment
     fix_environment() 
 
-from apps.eve_db.models import EVEPlayerAlliance, EVEPlayerCorporation
+from eve_api.models import EVEPlayerAlliance, EVEPlayerCorporation
 
 def start_full_import():
     """
