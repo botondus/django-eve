@@ -52,7 +52,6 @@ SERVE_MEDIA = True
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
-YUI_URL = 'http://yui.yahooapis.com/2.7.0/build/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -60,7 +59,7 @@ YUI_URL = 'http://yui.yahooapis.com/2.7.0/build/'
 ADMIN_MEDIA_PREFIX = '/media/amedia/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '37asdf#90flkdkA:df;l7r10!j#()jjdg'
+SECRET_KEY = 'CHANGETHIS'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -100,19 +99,24 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'django_extensions',
     'eve_proxy',
     'eve_db',
     'eve_api',
 )
 
+# Optionally include django_extensions, if the user has it available.
+try:
+    INSTALLED_APPS += ('django_extensions',)
+except ImportError:
+    pass
+
 # Path to the CCP SQLite DB dump.
 EVE_CCP_DUMP_SQLITE_DB = os.path.join(BASE_PATH, 'ccp_dump.db')
 
 # A user ID to use to get API information.
-EVE_API_USER_ID = 3552139
+EVE_API_USER_ID = 1234567
 # A user limited or full API key for API querying.
-EVE_API_USER_KEY = 'HSZsAOHYjZj1VqyVvO04t5bPQbufUhuzbYdjrSxpeyHFpr7v4jhQFMbouaI2bxsw'
+EVE_API_USER_KEY = 'CHANGE THIS TO YOUR API KEY'
 
 """
 This makes any settings in local_settings.py take precedence over the ones
