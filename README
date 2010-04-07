@@ -1,11 +1,11 @@
 In order to import the CCP data, you will first need to download the SQLite
 dumps from: 
 
-    http://eve.no-ip.de/apo15/
+    http://eve.no-ip.de/dom111/
     
 At the time of this document's writing, the file name is:
 
-    apo15-sqlite3-v1.db.bz2
+    dom111-sqlite3-v1.db.bz2
     
 You do -NOT- want the eam version. It is stripped down a lot and is missing
 all kinds of information that we use.
@@ -14,7 +14,7 @@ Download and extract the DB file and place it the same directory as your
 settings.py file. You will then want to rename it to ccp_dump.db. You are then 
 ready to run the importers. This is generally done like this:
 
-    python manage.py import_ccp_dump
+    python manage.py eve_import_ccp_dump
     
 Note that this will take a very long time to run, possibly over an hour. You
 should only have to do this once, though.
