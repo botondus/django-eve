@@ -105,6 +105,7 @@ INSTALLED_APPS = (
 
 # Optionally include django_extensions, if the user has it available.
 try:
+    import django_extensions
     INSTALLED_APPS += ('django_extensions',)
 except ImportError:
     pass
