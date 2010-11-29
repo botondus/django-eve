@@ -5,8 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/(.*)', admin.site.root),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/(.*)', admin.site.root),
     # This is the entry you'd need if you just wanted to serve a proxy.
     # You'll need to create another site if you want to serve this alongside
     # other content.
@@ -20,6 +20,6 @@ urlpatterns = patterns('',
 # static content to handle media files (apache, lighttpd).
 if settings.SERVE_MEDIA:
     urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', 
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
          {'document_root': settings.MEDIA_ROOT}),
     )

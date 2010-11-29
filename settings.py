@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'django_extensions',
     'eve_proxy',
     'eve_db',
     'eve_api',
