@@ -1,4 +1,5 @@
 import os
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -13,18 +14,22 @@ MANAGERS = ADMINS
 # sure to use Unix-style forward slashes, they are automatically translated.
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
-# 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_ENGINE = 'postgresql_psycopg2'
-# Or path to database file if using sqlite3.
-DATABASE_NAME = 'django_eve'
-# Not used with sqlite3.
-DATABASE_USER = 'django_eve'
-# Not used with sqlite3.
-DATABASE_PASSWORD = 'django_eve'
-# Set to empty string for localhost. Not used with sqlite3.         
-DATABASE_HOST = ''
-# Set to empty string for default. Not used with sqlite3.             
-DATABASE_PORT = ''
+# Add this to assist with development. For example, I symlink my local
+# clones of django-eve-db, djagno-eve-api, and django-eve-proxy into my
+# apps dir so I can run them directly from there instead of installing them
+# each time I make a change.
+sys.path.insert(0, os.path.join(BASE_PATH, "apps"))
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_eve',
+        'USER': 'django_eve',
+        'PASSWORD': 'django_eve',
+        'HOST': '',
+        'PORT': ''
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

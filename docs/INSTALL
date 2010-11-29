@@ -1,11 +1,11 @@
 In order to import the CCP data, you will first need to download the SQLite
 dumps from: 
 
-    http://eve.no-ip.de/dom111/
+    http://eve.no-ip.de/tyr104/
     
 At the time of this document's writing, the file name is:
 
-    dom111-sqlite3-v1.db.bz2
+    tyr104-sqlite3-v1.db.bz2
     
 You do -NOT- want the eam version. It is stripped down a lot and is missing
 all kinds of information that we use.
@@ -23,7 +23,7 @@ should only have to do this once, though.
 Should you have any questions, comments, bug reports, or suggestions, 
 visit our Google Code project at:
 
-http://code.google.com/p/django-eve/
+https://github.com/gtaylor/django-eve
 
 Discussion groups may be found at:
 http://groups.google.com/group/django-eve

@@ -37,17 +37,17 @@ sub-projects provide the actual functionality. You may find them listed below:
   EVE data API trivial. All parsing of the data returned by the API is handled, 
   as are cache recycle times via `django-eve-proxy`_.
   
-.. _django-eve-db: http://code.google.com/p/django-eve-db/
-.. _django-eve-proxy: http://code.google.com/p/django-eve-proxy/
-.. _django-eve-api: http://code.google.com/p/django-eve-api/
+.. _django-eve-db: https://github.com/gtaylor/django-eve-db
+.. _django-eve-proxy: https://github.com/gtaylor/django-eve-proxy
+.. _django-eve-api: https://github.com/gtaylor/django-api
   
 ---------------
 Getting Started
 ---------------
 
 The easiest way to get started developing EVE software with django-eve is to 
-follow the installation instructions. This will get you running quickly 
-and easily.
+follow the installation instructions found in the docs/INSTALL file. This will 
+get you running quickly and easily.
 
 -----------
 Development
