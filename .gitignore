@@ -5,6 +5,7 @@
 *.swp
 *.tmp
 *~
+ccp_dump.db
 build
 dist
 apps/eve_db
