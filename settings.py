@@ -107,6 +107,7 @@ INSTALLED_APPS = (
     'eve_proxy',
     'eve_db',
     'eve_api',
+    'south',
 )
 
 # Optionally include django_extensions, if the user has it available.
