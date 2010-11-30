@@ -3,3 +3,6 @@ psycopg2
 south
 docutils
 django-extensions
+git+http://github.com/gtaylor/django-eve-proxy.git#egg=eve_proxy
+git+http://github.com/gtaylor/django-eve-db.git#egg=eve_db
+git+http://github.com/gtaylor/django-eve-api.git#egg=eve_api
