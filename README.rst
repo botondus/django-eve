@@ -46,8 +46,8 @@ Getting Started
 ---------------
 
 The easiest way to get started developing EVE software with django-eve is to 
-follow the installation instructions found in the docs/INSTALL file. This will 
-get you running quickly and easily.
+follow the installation instructions found in the docs/INSTALL.rst file. 
+This will get you running quickly and easily.
 
 -----------
 Development
