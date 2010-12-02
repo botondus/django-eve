@@ -66,3 +66,9 @@ For support, you may either file an issue in our issue tracker, or send a
 message to our `mailing list`_.
 
 .. _mailing list: http://groups.google.com/group/django-eve
+
+You may also connect to our IRC room on the ColdFront network
+
+* **Host:** irc.coldfront.net
+* **Port:** 6667
+* **Room:** #django-eve
