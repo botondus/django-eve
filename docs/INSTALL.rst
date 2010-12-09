@@ -37,6 +37,7 @@ settings.py file. You will then want to rename it to ccp_dump.db. You are then
 ready to run the importers. This is generally done like this::
 
     python manage.py syncdb
+    python manage.py migrate
     python manage.py eve_import_ccp_dump
     
 Note that this will take a very long time to run, possibly over an hour. You
