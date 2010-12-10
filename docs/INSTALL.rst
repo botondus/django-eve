@@ -30,7 +30,7 @@ Importing CCP Data
 In order to import the CCP data, you will first need to download the SQLite
 dumps from: 
 
-    http://eve.no-ip.de/tyr104/tyr104-sqlite3-v1.db.bz2
+    http://eve.no-ip.de/inc100/inc100-sqlite3-v2.db.bz2
 
 Download and extract the DB file and place it the same directory as your
 settings.py file. You will then want to rename it to ccp_dump.db. You are then 
